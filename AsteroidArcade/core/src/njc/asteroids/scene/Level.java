@@ -1,36 +1,21 @@
 package njc.asteroids.scene;
 
 public enum Level {
-	PAUSE("Space"),
-	ASTEROIDS("Asteroids"),
-	DEBRIS("Debris Field"),
-	MINES("Mine Field"),
-	SWARM("UFO swarm"),
-	BOSS_UFO("Enemy UFO"),
-	BOSS_TURRET("Missile Turret"),
-	BOSS_LASER("Laser Ship"),
-	WORMHOLE("???");
-	
-	private String name;
-	
-	Level(String n) {
-		name = n;
+	PAUSE, ASTEROIDS, DEBRIS, MINES, SWARM, WORMHOLE, BOSS_UFO, BOSS_TURRET, BOSS_LASER;
+
+	public static Level randomBoss() {
+		Level[] bosses = {BOSS_UFO, BOSS_TURRET, BOSS_LASER, SWARM};
+		return bosses[(int) (Math.random() * bosses.length)];
 	}
 	
-	@Override
-	public String toString() {
-		return this.name;
-	}
-	
-	public static Level getRandom() {
-		return Level.values()[(int) (Math.random() * 3) + 1];
-	}
-	
-	public static Level getRandomBoss() {
-		return Level.values()[(int) (Math.random() * 4) + 4];
+	public static Level random() {
+		Level[] regularLevels = {ASTEROIDS, DEBRIS, MINES};
+		return regularLevels[(int) (Math.random() * regularLevels.length)];
 	}
 	
 	public boolean isBoss() {
-		return this == BOSS_UFO || this == BOSS_TURRET || this == BOSS_LASER;
-	}
+		if(this == BOSS_UFO || this == BOSS_TURRET || this == BOSS_LASER)
+			return true;
+		return false;
+	} 
 }

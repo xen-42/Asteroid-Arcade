@@ -47,7 +47,7 @@ public class Game extends ApplicationAdapter {
 		_viewport.apply();
 
 		//Set background to black
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 		
 		//Load music
 		loadVolume();
@@ -65,6 +65,7 @@ public class Game extends ApplicationAdapter {
 		loadTexture("textures/asteroid.png");
 		loadTexture("textures/star.png");
 		loadTexture("textures/fade.png");
+		
 		_assetManager.finishLoading();
 		
 		//Push load scene
@@ -75,6 +76,7 @@ public class Game extends ApplicationAdapter {
 		loadTexture("textures/flame_1.png");
 		loadTexture("textures/flame_2.png");
 		loadTexture("textures/junk.png");
+		loadTexture("textures/star_1.png");
 		
 		//Pickups
 		loadTexture("textures/coin.png");
@@ -197,10 +199,10 @@ public class Game extends ApplicationAdapter {
       _camera.position.set(_camera.viewportWidth/2,_camera.viewportHeight/2,0);
    }
 	
-	public void loadVolume() {
+   public void loadVolume() {
 		masterVolume = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("soundMute", false) ? 0f : 0.5f;
 		musicVolume = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("musicMute", false) ? 0f : 0.5f;
-	}
+   }
 	
 	private Vector2 getInput() {
 		float x = (Gdx.input.getX() - _viewport.getScreenX()) * (WIDTH / (float)_viewport.getScreenWidth());

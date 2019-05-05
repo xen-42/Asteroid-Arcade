@@ -18,8 +18,6 @@ public class DataManager {
 		unlocks[0] = true;
 		for(int i = 1; i < unlocks.length; i++) {
 			unlocks[i] = prefs.getBoolean("unlock" + i , false);
-		}
-		
+		}	
 	}
-
 }

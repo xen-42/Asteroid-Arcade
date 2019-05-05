@@ -1,0 +1,21 @@
+package njc.asteroids.scene;
+
+public enum Level {
+	PAUSE, ASTEROIDS, DEBRIS, MINES, SWARM, WORMHOLE, BOSS_UFO, BOSS_TURRET, BOSS_LASER;
+
+	public Level randomBoss() {
+		Level[] bosses = {BOSS_UFO, BOSS_TURRET, BOSS_LASER};
+		return bosses[(int) (Math.random() * bosses.length)]
+	}
+	
+	public Level random() {
+		Level[] regularLevels = {ASTEROIDS, DEBRIS, MINES};
+		return regularLevels[(int) (Math.random() * regularLevels.length)];
+	}
+	
+	public boolean isBoss() {
+		if(this == BOSS_UFO || this == BOSS_TURRET || this == BOSS_LASER)
+			return true;
+		return false;
+	} 
+}

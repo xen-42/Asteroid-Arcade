@@ -26,7 +26,7 @@ public class MenuScene extends Scene {
 	private Texture[] playerTextures = new Texture[5];
 	private String[] playerLabels = new String[5];
 	
-	private Texture starTexture, asteroidTexture, satelliteTexture, panelTexture, optionsTexture, 
+	private Texture starTexture1, starTexture2, asteroidTexture, satelliteTexture, panelTexture, optionsTexture, 
 		coinTexture, arrowLeftTexture, arrowRightTexture, unknownTexture;
 	private Sound blip, bloop, unlock;
 	
@@ -59,7 +59,8 @@ public class MenuScene extends Scene {
 		
 		unknownTexture = assetManager.get("gui/unknown.png", Texture.class);
 		
-		starTexture = assetManager.get("textures/star.png", Texture.class);
+		starTexture1 = assetManager.get("textures/star.png", Texture.class);
+		starTexture2 = assetManager.get("textures/star_1.png", Texture.class);
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
 		satelliteTexture = assetManager.get("textures/satellite.png", Texture.class);
 		panelTexture = assetManager.get("textures/panel.png", Texture.class);
@@ -85,21 +86,21 @@ public class MenuScene extends Scene {
 		stars2 = new GameObject[20];
 		
 		for(int i = 0; i < 20; i++) {
-			GameObject star = new GameObject().setTexture(2f, starTexture);
+			GameObject star = new GameObject().setTexture(2f, (float) (Math.random() + 0.5f), starTexture1, starTexture2);
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
+			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
 			
 			bgObjects.add(star);
 			stars1[i] = star;
 		}
 		for(int i = 0; i < 20; i++) {
-			GameObject star = new GameObject().setTexture(1f, starTexture);
+			GameObject star = new GameObject().setTexture(1f, (float) (Math.random() + 0.5f), starTexture1, starTexture2);
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
+			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
 			
 			bgObjects.add(star);
 			stars2[i] = star;
@@ -185,11 +186,6 @@ public class MenuScene extends Scene {
 		super.update(dt);
 		
 		player.getPosition().mulAdd(new Vector2(0, 32f * (float) Math.sin(3 * timer)), dt);
-		
-		for(int i = 0; i < 20; i++) {
-			stars1[i].getPosition().mulAdd(new Vector2(4f * (float) Math.sin(2 * timer + i), 0), dt);
-			stars2[i].getPosition().mulAdd(new Vector2(4f * (float) Math.sin(2 * timer + i), 0), dt);
-		}
 		
 		asteroid1.getPosition().mulAdd(new Vector2(0, 6f * (float) Math.cos(2 * timer)), dt);
 		asteroid2.getPosition().mulAdd(new Vector2(0, 8f * (float) Math.cos(3 * timer)), dt);

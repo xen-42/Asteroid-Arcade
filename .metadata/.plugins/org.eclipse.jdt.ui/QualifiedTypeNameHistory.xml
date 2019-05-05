@@ -30,7 +30,6 @@
 <fullyQualifiedTypeName name="njc.ufo.particle.Flames"/>
 <fullyQualifiedTypeName name="njc.ufo.entities.hazards.Junk"/>
 <fullyQualifiedTypeName name="njc.ufo.Font"/>
-<fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.player.Weapon"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.assets.AssetManager"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.SwarmEntity"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.viewport.ExtendViewport"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.BitmapFont"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

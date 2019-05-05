@@ -15,7 +15,7 @@ import njc.asteroids.object.TextObject;
 
 public class OptionScene extends Scene {
 	private Texture muteSoundTexture, soundTexture, muteMusicTexture, musicTexture,
-		asteroidTexture, rocketTexture, satelliteTexture, starTexture;
+		asteroidTexture, rocketTexture, satelliteTexture, starTexture1, starTexture2;
 	
 	private GameObject asteroid, rocket, satellite;
 	private GameObject[] stars1, stars2;
@@ -37,27 +37,28 @@ public class OptionScene extends Scene {
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
 		rocketTexture = assetManager.get("textures/ships/rocket.png", Texture.class);
 		satelliteTexture = assetManager.get("textures/satellite.png", Texture.class);
-		starTexture = assetManager.get("textures/star.png", Texture.class);
+		starTexture1 = assetManager.get("textures/star.png", Texture.class);
+		starTexture2 = assetManager.get("textures/star_1.png", Texture.class);
 		
 		stars1 = new GameObject[20];
 		stars2 = new GameObject[20];
 		
 		for(int i = 0; i < 20; i++) {
-			GameObject star = new GameObject().setTexture(2f, starTexture);
+			GameObject star = new GameObject().setTexture(2f, (float) Math.random() + 0.5f, starTexture1, starTexture2);
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
+			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
 			
 			bgObjects.add(star);
 			stars1[i] = star;
 		}
 		for(int i = 0; i < 20; i++) {
-			GameObject star = new GameObject().setTexture(1f, starTexture);
+			GameObject star = new GameObject().setTexture(1f, (float) (Math.random() + 0.5f), starTexture1, starTexture2);
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
+			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
 			
 			bgObjects.add(star);
 			stars2[i] = star;
@@ -137,11 +138,6 @@ public class OptionScene extends Scene {
 		asteroid.getPosition().y += 0.25 * Math.sin(4 * timer);
 		rocket.getPosition().y += 0.4 * Math.cos(3 * timer);
 		satellite.getPosition().y += 0.1 * Math.cos(2 * timer);
-		
-		for(int i = 0; i < 20; i++) {
-			stars1[i].getPosition().mulAdd(new Vector2(4f * (float) Math.sin(2 * timer + i), 0), dt);
-			stars2[i].getPosition().mulAdd(new Vector2(4f * (float) Math.sin(2 * timer + i), 0), dt);
-		}
 	}
 	
 	@Override
@@ -164,7 +160,6 @@ public class OptionScene extends Scene {
 				blip.play(Game.masterVolume);
 			}
 			if(back.isTouched(mouse)) {
-				back.changeFrame();
 				Preferences prefs = Gdx.app.getPreferences("AsteroidArcadePrefs");
 				prefs.putBoolean("soundMute", soundMute);
 				prefs.putBoolean("musicMute", musicMute);

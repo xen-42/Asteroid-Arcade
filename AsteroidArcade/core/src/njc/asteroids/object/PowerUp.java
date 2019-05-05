@@ -43,15 +43,15 @@ public class PowerUp extends Entity {
 					p.setHealth(hp);
 					break;
 				case ENERGY:
-					p.weapon.setEnergy(p.weapon.getMaxEnergy());
-					if(p.shield != null) p.setShieldHealth(p.getMaxShieldHealth());
+					p.getWeapon().setEnergy(p.getWeapon().getMaxEnergy());
+					p.setShieldToMax();
 					break;
 				case TRIPLE_SHOT: 
 					p.tripleShot = true; 
 					p.tripleShotTimer = 20f; 
 					break;
 				case SUPER_MODE: 
-					if(p.shield != null) p.setShieldHealth(p.getMaxShieldHealth());
+					p.setShieldToMax();
 					p.setHealth(p.getMaxHealth());
 					p.superMode = true;
 					p.superModeTimer = 20f; 

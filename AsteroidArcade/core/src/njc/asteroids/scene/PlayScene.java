@@ -44,8 +44,10 @@ public class PlayScene extends Scene {
 	private Texture shuttleTexture = assetManager.get("textures/ships/shuttle.png", Texture.class);
 	private Texture ufoTexture = assetManager.get("textures/ships/ufo.png", Texture.class);
 	//private Texture laserUfoTexture = assetManager.get("textures/ships/laser_ship.png", Texture.class);
-	private Texture whaleTexture1 = assetManager.get("textures/ships/whale_1.png", Texture.class);
-	private Texture whaleTexture2= assetManager.get("textures/ships/whale_2.png", Texture.class);
+	private Texture[] whaleTextures = {
+			assetManager.get("textures/ships/whale_1.png", Texture.class),
+			assetManager.get("textures/ships/whale_2.png", Texture.class)
+	};
 	private Texture eagleTexture = assetManager.get("textures/ships/eagle.png", Texture.class);
 	
 	//Weapon textures
@@ -54,11 +56,19 @@ public class PlayScene extends Scene {
 	private Texture missileTexture = assetManager.get("textures/weapons/missile.png", Texture.class);
 	
 	//Stuff
-	private Texture starTexture = assetManager.get("textures/star.png", Texture.class);
+	private Texture[] starTextures = {
+			assetManager.get("textures/star.png", Texture.class),
+			assetManager.get("textures/star_1.png", Texture.class)
+	};
+	
 	private Texture coinTexture = assetManager.get("textures/coin.png", Texture.class);
 	private Texture asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
-	private Texture flameTexture1 = assetManager.get("textures/flame_1.png", Texture.class);
-	private Texture flameTexture2 = assetManager.get("textures/flame_2.png", Texture.class);
+	
+	private Texture[] flameTextures = {
+			assetManager.get("textures/flame_1.png", Texture.class),
+			assetManager.get("textures/flame_2.png", Texture.class)
+	};
+	
 	private Texture shieldTexture = assetManager.get("textures/shield.png", Texture.class);
 	private Texture	explosionTexture = assetManager.get("textures/boom.png", Texture.class);
 	
@@ -97,12 +107,16 @@ public class PlayScene extends Scene {
 	//Bosses
 	private Texture laserBossTexture = assetManager.get("textures/ships/boss_laser.png", Texture.class);
 	private Texture laserBossSpikesTexture = assetManager.get("textures/ships/boss_laser_spikes.png", Texture.class);
+	
 	private Texture ufoBossTexture = assetManager.get("textures/ships/boss_ufo.png", Texture.class);
 	private Texture ufoBossSpikesTexture = assetManager.get("textures/ships/boss_ufo_spikes.png", Texture.class);
+	
 	private Texture turretBossTexture = assetManager.get("textures/ships/boss_turret.png", Texture.class);
 	
-	private Texture ufoSwarmTexture = assetManager.get("textures/ships/swarm_ufo.png", Texture.class);
-	private Texture ufoSwarmTexture2 = assetManager.get("textures/ships/swarm_ufo_2.png", Texture.class);
+	private Texture[] ufoSwarmTextures = {
+			assetManager.get("textures/ships/swarm_ufo.png", Texture.class),
+			assetManager.get("textures/ships/swarm_ufo_2.png", Texture.class)
+	};
 	
 	private int highScore = Gdx.app.getPreferences("AsteroidArcadePrefs").getInteger("highscore", 0);
 	private int bestTime = Gdx.app.getPreferences("AsteroidArcadePrefs").getInteger("besttime", 0);
@@ -113,6 +127,7 @@ public class PlayScene extends Scene {
 	private Level level = Level.PAUSE;
 	
 	private boolean inverted = false;
+	private float milestone = 3f;
 
 	public PlayScene(SceneManager sm, AssetManager am, Font[] f, int selection) {
 		super(sm, am, f);
@@ -151,7 +166,6 @@ public class PlayScene extends Scene {
 
 		newRandomStars();
 
-		GameObject flame, shield;
 		switch (selection) {
 		case 0:
 			player.setTexture(2f, rocketTexture);
@@ -160,11 +174,7 @@ public class PlayScene extends Scene {
 			player.setWeapon(Weapon.Type.BURST_LASER, 7f, laserTexture);
 			
 			//Flame
-			flame = new GameObject()
-					.setTexture(2f, 0.5f, flameTexture1, flameTexture2)
-					.setRotation(180f, 0f);
-			flame.setParent(player, new Vector2(0, -34f), true);
-			objects.add(flame);
+			objects.add(player.addFlame(-34, 2f, flameTextures));
 			break;
 		case 1:
 			player.setTexture(2f, shuttleTexture);
@@ -172,11 +182,7 @@ public class PlayScene extends Scene {
 			player.setWeapon(Weapon.Type.MISSILE, 0f, missileTexture);
 			
 			//Flame
-			flame = new GameObject()
-					.setTexture(2f, 0.5f, flameTexture1, flameTexture2)
-					.setRotation(180f, 0f);
-			flame.setParent(player, new Vector2(0, -42f), true);
-			objects.add(flame);
+			objects.add(player.addFlame(-42, 2f, flameTextures));
 			break;
 		case 2:
 			player.setTexture(2f, eagleTexture);
@@ -184,11 +190,7 @@ public class PlayScene extends Scene {
 			player.setWeapon(Weapon.Type.LASER, 7f, laserTexture);
 			
 			//Flame
-			flame = new GameObject()
-					.setTexture(2f, 0.5f, flameTexture1, flameTexture2)
-					.setRotation(180f, 0f);
-			flame.setParent(player, new Vector2(0, -48f), true);
-			objects.add(flame);
+			objects.add(player.addFlame(-48, 2f, flameTextures));
 			break;
 			/*
 		case 3:
@@ -204,7 +206,7 @@ public class PlayScene extends Scene {
 			break;
 			*/
 		case 3:
-			player.setTexture(2f, 0.5f, whaleTexture1, whaleTexture2);
+			player.setTexture(2f, 0.5f, whaleTextures);
 			player.setHealth(10);
 			player.addRegen();
 			player.setWeapon(Weapon.Type.PHOTON, 5f, photonTexture);
@@ -217,10 +219,7 @@ public class PlayScene extends Scene {
 			player.setWeapon(Weapon.Type.BURST_LASER, 6f, laserTexture);
 			
 			//Shield
-			shield = new GameObject().setTexture(4.5f, shieldTexture).setRotation(0f, 180f);
-			shield.setParent(player, new Vector2(0,0), false);
-			fgObjects.add(shield);
-			player.addShield(shield, 6);
+			fgObjects.add(player.addShield(6, shieldTexture, 4.5f));
 			break;
 		}
 
@@ -237,17 +236,19 @@ public class PlayScene extends Scene {
 
 			// Spawning stars
 			if (Math.random() < 5 * dt) {
-				newStar(2f);
+				newStar(2f, false);
 			}
 			if (Math.random() < 5 * dt) {
-				newStar(1.5f);
+				newStar(1.5f, false);
 			}
 			if (Math.random() < 5 * dt) {
-				newStar(1f);
+				newStar(1f, false);
 			}
 
 			// Spawning powerups
-			
+			if(!level.isBoss()) {
+				spawnPowerUps(dt);
+			}
 
 			//Trails
 			if(player.getHealth() > 0) {
@@ -296,7 +297,7 @@ public class PlayScene extends Scene {
 				}
 				break;
 			case SWARM:
-				if(Math.random() < 0.5f * spawnChance(dt)) {
+				if(Math.random() < 0.1f * spawnChance(dt)) {
 					newSwarm();
 				}
 				break;
@@ -363,8 +364,6 @@ public class PlayScene extends Scene {
 					}
 				}
 				
-				/*
-				 * TODO: Add to boss level
 				if (boss.markForRemoval) {
 					for (int i = 0; i < 8; i++)
 						newPowerUp(PowerUp.Type.COIN);
@@ -373,7 +372,37 @@ public class PlayScene extends Scene {
 					level = Level.PAUSE;
 					milestone = timer + 5;
 				}
-				*/
+			} else if(timer > milestone) {
+				//Update level
+				// Invert after wormhole
+				if(level == Level.WORMHOLE) {
+					invert();
+					level = Level.ASTEROIDS;
+					milestone = timer + 15;
+				} else if (level == Level.PAUSE){
+					if(timer > 0){
+						double chance = Math.random();
+						if(chance > 0.99) {
+							// Random boss level
+							level = Level.randomBoss();
+							//Timer only really effects alien swarm
+							milestone = timer + 15;
+						} else if(chance > 0) {
+							level = Level.WORMHOLE;
+							newWormhole();
+							// Takes 5 seconds to reach wormhole
+							milestone = timer + 5;
+						}
+					} else {
+						level = Level.random();
+						milestone = timer + 25;
+					}
+				} else {
+					level = Level.PAUSE;
+					milestone = timer + 3;
+					// Go back to normal after inverting
+					if(inverted) invert();
+				}
 			}
 			
 			//Explosion Powerup
@@ -436,7 +465,7 @@ public class PlayScene extends Scene {
 			
 			//SuperMode powerup
 			if(player.superMode) {
-				player.weapon.setEnergy(player.weapon.getMaxEnergy());
+				player.getWeapon().setEnergy(player.getWeapon().getMaxEnergy());
 			}
 
 			//Do once when the player dies
@@ -463,7 +492,7 @@ public class PlayScene extends Scene {
 			for (int i = 0; i < player.getShieldHealth(); i++) {
 				batch.draw(shieldheartTexture, i * 32, 8, 32, 32);
 			}
-			for (int i = 0; i < player.weapon.getEnergy(); i++) {
+			for (int i = 0; i < player.getWeapon().getEnergy(); i++) {
 				batch.draw(energyTexture, i * 32, 40, 32, 32);
 			}
 			pauseButton.render(batch);
@@ -563,7 +592,8 @@ public class PlayScene extends Scene {
 	}
 
 	private void newAsteroid() {
-		float scale = (float) Math.random() * 2f + 2f;
+		int scale = (int) (Math.random() * 2f) + 2;
+
 		Entity asteroid = (Entity) new Entity().setTexture(scale, asteroidTexture);
 
 		float x = (float) Math.random() * (Game.WIDTH - asteroid.getWidth());
@@ -625,7 +655,7 @@ public class PlayScene extends Scene {
 		SwarmEntity entity = (SwarmEntity) new SwarmEntity(laserTexture, entities, lasers);
 		if(spawnCollision(entity)) return;
 
-		entity.setTexture(2f, 0.5f, ufoSwarmTexture, ufoSwarmTexture2);
+		entity.setTexture(2f, 0.5f, ufoSwarmTextures);
 		entity.setHealth(0.5f);
 		entity.setVelocity(new Vector2(0, -100f));
 		
@@ -705,9 +735,9 @@ public class PlayScene extends Scene {
 	
 	private void playerFire(float dir, boolean ignoreEnergy) {
 		if(inverted) dir += 180f;
-		Entity e = player.weapon.fire(dir, ignoreEnergy);
+		Entity e = player.getWeapon().fire(dir, ignoreEnergy);
 		if (e != null) {
-			if (player.weapon.type != Weapon.Type.LASER)
+			if (player.getWeapon().type != Weapon.Type.LASER)
 				lasers[(int) (Math.random() * 3)].play(Game.masterVolume);
 			else {
 				lasers[1].play(Game.masterVolume * 0.25f);
@@ -736,50 +766,51 @@ public class PlayScene extends Scene {
 	
 	private void newRandomStars() {
 		for (int i = 0; i < 15; i++) {
-			newRandomStar(2f);
+			newStar(2f, true);
 		}
 		for (int i = 0; i < 15; i++) {
-			newRandomStar(1.5f);
+			newStar(1.5f, true);
 		}
 		for (int i = 0; i < 15; i++) {
-			newRandomStar(1f);
+			newStar(1f, true);
 		}
 	}
 	
 	private void invert() {
 		inverted = !inverted;
+		
+		//Invert player
 		if(inverted) {
-			player.getPosition().y = Game.HEIGHT - Game.HEIGHT / 5 - player.getHeight();
-			player.setRotation(180f, 0f);
-			player.weapon.setOffset(-1);
+			player.getPosition().y = (Game.HEIGHT*4/5) - player.getHeight();
 		} else {
 			player.getPosition().y = Game.HEIGHT / 5;
-			player.setRotation(0f, 0f);
-			player.weapon.setOffset(1);
 		}
 		
-		for(int i = bgObjects.size() - 1; i >= 0; i--) {
-			if(bgObjects.get(i).getParent() instanceof Player) continue;
-			bgObjects.remove(i);
-		}
+		//Invert objects
+		rotateObject(player);
+		for(GameObject o : bgObjects) rotateObject(o);
 		
-		for(int i = objects.size() - 1; i >= 0; i--) {
-			if(objects.get(i).getParent() instanceof Player) continue;
-			objects.remove(i);
-		}
+		for(GameObject o : objects) removeObject(o);
+		for(GameObject o : fgObjects) removeObject(o);
+		for(GameObject o : entities) removeObject(o);
 		
-		for(int i = fgObjects.size() - 1; i >= 0; i--) {
-			if(fgObjects.get(i).getParent() instanceof Player) continue;
-			else fgObjects.remove(i);
-		}
 		
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			if(entities.get(i) instanceof Player) continue;
-			else entities.remove(i);
-		}
-		
-		newRandomStars();
 		fade(0.3f, 0.7f, 0.8f);
+	}
+	
+	private void rotateObject(GameObject o) {
+		o.getVelocity().y *= -1;
+		o.setRotation((o.getRotation() + 180) % 360, o.getAngularVelocity() * -1);
+	}
+	
+	private void removeObject(GameObject o) {
+		if(!(o instanceof Player || o.getParent() instanceof Player)) {
+			o.markForRemoval = true;
+			// Make sure they don't blow up when they disappear
+			if(o instanceof Entity) {
+				((Entity) o).explodeOnDeath = false;
+			}
+		}
 	}
 	
 	private void newWormhole() {
@@ -830,42 +861,38 @@ public class PlayScene extends Scene {
 			//Same x
 			float x = ((int) ((Math.random() * (Game.WIDTH - 32)) / 32)) * 32f;
 			for (int i = 0; i < (int) (Math.random() * 8) + 1; i++) {
-				entities.add(new PowerUp(x, inverted ? ((i + 1) * -32) : Game.HEIGHT + i * 32, t, type, scale));
+				PowerUp p = new PowerUp(x, inverted ? ((i + 1) * -32) : Game.HEIGHT + i * 32, t, type, scale);
+				entities.add(p);
+				p.getVelocity().y *= (inverted ? 1 : -1);
 			}
 		} else {
 			PowerUp p = new PowerUp(inverted ? -32 : Game.HEIGHT, t, type, scale);
 			if(rotates) p.setRotation(0f,  45f);
 			entities.add(p);
+			p.getVelocity().y *= (inverted ? 1 : -1);
 		}
 	}
 	
-	private void newStar(float scale) {
-		GameObject star = new GameObject().setTexture(scale, starTexture);
+	private void newStar(float scale, boolean randomY) {
+		GameObject star = new GameObject().setTexture(scale, (float) (Math.random() + 0.5f), starTextures);
 
-		int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
-		star.setPosition(new Vector2((float) x, inverted ? -star.getHeight() : Game.HEIGHT));
+		float x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
+		
+		float y;
+		if(randomY)
+			y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
+		else
+			y = (inverted ? -star.getHeight() : Game.HEIGHT);
+		
+		star.setPosition(new Vector2(x, y));
 		star.setVelocity(new Vector2(0, (inverted ? 1 : -1) * 200f / (2f / scale)));
-		star.setRotation((float) Math.random() * 90f, (float) Math.random() * 180f - 90f);
 
 		for (GameObject star2 : bgObjects) {
 			if (star2.getWidth() == star.getWidth() && Entity.collisionCheck(star, star2)) {
-				newStar(scale);
+				newStar(scale, randomY);
 				return;
 			}
 		}
-
-		bgObjects.add(star);
-	}
-	
-	private void newRandomStar(float scale) {
-		GameObject star = new GameObject().setTexture(scale, starTexture);
-
-		int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
-		int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
-
-		star.setPosition(new Vector2(x, y));
-		star.setVelocity(new Vector2(0, (inverted ? 1 : -1) * 200f / (2f / scale)));
-		star.setRotation((float) Math.random() * 90f, (float) Math.random() * 180f - 90f);
 
 		bgObjects.add(star);
 	}

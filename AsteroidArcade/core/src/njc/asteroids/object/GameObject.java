@@ -197,6 +197,10 @@ public class GameObject implements Cloneable {
 		return this.theta;
 	}
 	
+	public float getAngularVelocity() {
+		return this.omega;
+	}
+	
 	public boolean isTouched(Vector2 pos) {
 		if(pos.x > this.getPosition().x && pos.x < this.getPosition().x + this.getWidth()) {
 			if(pos.y > this.getPosition().y && pos.y < this.getPosition().y + this.getHeight()) {

@@ -2,14 +2,15 @@ package njc.asteroids.object.entities.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
 import njc.asteroids.object.GameObject;
 import njc.asteroids.object.entities.Entity;
 
 public class Player extends Entity {
-	public Weapon weapon;
-	public GameObject shield;
+	private Weapon weapon;
+	private GameObject shield;
 	
 	public float timer;
 	private float shieldHealth, maxShieldHealth;
@@ -47,10 +48,23 @@ public class Player extends Entity {
 		this.roll = roll;
 	}
 	
-	public void addShield(GameObject shield, float max) {
-		this.shieldHealth = max;
-		this.maxShieldHealth = max;
+	public GameObject addShield(float maxHP, Texture shieldTexture, float scale) {
+		this.shieldHealth = maxHP;
+		this.maxShieldHealth = maxHP;
+		
+		GameObject shield = new GameObject().setTexture(scale, shieldTexture).setRotation(0f, 180f);
+		shield.setParent(this, new Vector2(0,0), false);
 		this.shield = shield;
+		
+		return shield;
+	}
+	
+	public GameObject addFlame(int yOffset, float scale, Texture... flameTextures) {
+		GameObject flame = new GameObject()
+				.setTexture(scale, 0.5f, flameTextures)
+				.setRotation(180f, 0f);
+		flame.setParent(this, new Vector2(0, yOffset), true);
+		return flame;
 	}
 	
 	public void setShieldHealth(float hp) {
@@ -69,7 +83,6 @@ public class Player extends Entity {
 	
 	public void setWeapon(Weapon.Type type, float e, Texture wt) {
 		this.weapon = new Weapon(this, type, e, wt);
-		this.weapon.setOffset(1);
 	}
 	
 	public void setSpeed(float f) {
@@ -130,5 +143,13 @@ public class Player extends Entity {
 	@Override
 	public void render(SpriteBatch batch) {
 		super.render(batch);
+	}
+	
+	public Weapon getWeapon() {
+		return this.weapon;
+	}
+	
+	public void setShieldToMax() {
+		if(this.shield != null) this.setShieldHealth(this.getMaxShieldHealth());
 	}
 }

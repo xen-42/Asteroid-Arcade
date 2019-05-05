@@ -50,8 +50,6 @@ public class BossEntity extends Entity {
 		this.setTexture(2f, texture);
 		this.setPosition(new Vector2((Game.WIDTH - this.getWidth()) / 2f, Game.HEIGHT + this.getHeight()));
 		this.setVelocity(new Vector2(0, -300f));
-		
-		this.weapon.setOffset(-2);
 	}
 
 	@Override

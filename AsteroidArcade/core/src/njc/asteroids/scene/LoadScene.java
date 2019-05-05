@@ -16,6 +16,7 @@ public class LoadScene extends Scene {
 	public LoadScene(SceneManager sm, AssetManager am, Font[] f) {
 		super(sm, am, f);
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
+		
 		asteroid = new GameObject().setTexture(6f, asteroidTexture);
 		asteroid.setPosition(new Vector2((Game.WIDTH - asteroid.getWidth()) / 2f, (Game.HEIGHT - asteroid.getHeight()) / 2f));
 		asteroid.setRotation(0f, 45f);		

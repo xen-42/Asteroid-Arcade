@@ -16,7 +16,6 @@ public class Weapon {
 	public Type type;
 	private float cooldown;
 	private float energy, maxEnergy;
-	private int offsetX = 0;
 	
 	private Texture texture;
 	
@@ -27,10 +26,6 @@ public class Weapon {
 		this.energy = e;
 		
 		this.texture = tex;
-	}
-	
-	public void setOffset(int o) {
-		this.offsetX = o;
 	}
 	
 	public void setEnergy(float e) {
@@ -110,6 +105,7 @@ public class Weapon {
 				return null;
 		}
 
+		float offsetX = parent.getRotation() < 180 ? 1 : -1;
 		float x = parent.getPosition().x + (parent.getWidth() - e.getWidth()) / 2f + (float) offsetX;
 		float y = parent.getPosition().y + (parent.getHeight() - e.getHeight()) / 2f;
 		
