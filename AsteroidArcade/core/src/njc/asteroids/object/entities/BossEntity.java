@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
+import njc.asteroids.object.GameObject;
 import njc.asteroids.object.entities.player.Player;
 import njc.asteroids.object.entities.player.Weapon;
 import njc.asteroids.scene.Level;
@@ -31,7 +32,7 @@ public class BossEntity extends Entity {
 		this.setHealth(0);
 		switch (this.type) {
 		case BOSS_UFO:
-			this.setHealth(32);
+			this.setHealth(64);
 			this.weapon = new Weapon(this, Weapon.Type.BURST_LASER, 0f, weaponTexture);
 			break;
 		case BOSS_LASER:
@@ -40,7 +41,7 @@ public class BossEntity extends Entity {
 			this.weapon = new Weapon(this, Weapon.Type.LASER, 0f, weaponTexture);
 			break;
 		case BOSS_TURRET:
-			this.setHealth(32);
+			this.setHealth(64);
 			this.weapon = new Weapon(this, Weapon.Type.MISSILE, 0f, weaponTexture);
 			break;
 		default:
@@ -74,7 +75,10 @@ public class BossEntity extends Entity {
 		switch (type) {
 			case BOSS_UFO:
 				this.getPosition().x = Game.WIDTH / 3f * (float) Math.cos(2 * timer) + 256 - 96f;
-				fireChance = 2f;
+				// Shoot in middle of screen
+				fireChance = 0f;
+				if(this.getPosition().x > Game.WIDTH / 4 && this.getPosition().x < Game.WIDTH * 3/4)
+					fireChance = 2f;
 				break;
 				
 			case BOSS_LASER:
@@ -120,7 +124,7 @@ public class BossEntity extends Entity {
 				this.setRotation(this.getRotation(), omegaDir * 25f);	
 				
 				if(this.timer < this.milestone) this.setRotation(this.getRotation(), 0f);				
-				if(player.markForRemoval) this.setRotation(this.getRotation(), 0f);
+				if(player.isMarkedForRemoval()) this.setRotation(this.getRotation(), 0f);
 				
 				break;
 	
@@ -140,5 +144,16 @@ public class BossEntity extends Entity {
 				entities.add(e);
 			}
 		}
+	}
+	
+	public GameObject addChild(Vector2 offset, boolean rotate, float childScale, Texture... childTextures) {
+		GameObject child = new GameObject();
+		if(childTextures.length > 1) 
+			child.setTexture(childScale, 0.5f, childTextures);
+		else
+			child.setTexture(childScale, childTextures[0]);
+		child.setParent(this, offset, !rotate);
+		if(rotate) child.setRotation(0f, 180f);
+		return child;
 	}
 }

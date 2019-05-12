@@ -3,6 +3,7 @@ package njc.asteroids.object.entities.player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+import njc.asteroids.object.entities.BossEntity;
 import njc.asteroids.object.entities.Entity;
 
 public class Weapon {
@@ -64,7 +65,7 @@ public class Weapon {
 				e.canExplode = false;
 				vel = 1000f;
 				e.setHeight(48f);
-				hp = 2f;
+				hp = 0.5f;
 				if(!ignoreEnergy) {
 					cooldown -= 0.02f;
 					if(this.parent instanceof Player) {
@@ -105,7 +106,7 @@ public class Weapon {
 				return null;
 		}
 
-		float offsetX = parent.getRotation() < 180 ? 1 : -1;
+		float offsetX = (parent.getRotation() < 180 && !(parent instanceof BossEntity))  ? 1 : -1;
 		float x = parent.getPosition().x + (parent.getWidth() - e.getWidth()) / 2f + (float) offsetX;
 		float y = parent.getPosition().y + (parent.getHeight() - e.getHeight()) / 2f;
 		

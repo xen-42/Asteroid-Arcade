@@ -5,11 +5,11 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
-import njc.asteroids.graphics.Font;
 import njc.asteroids.managers.DataManager;
 import njc.asteroids.managers.MusicHandler;
 import njc.asteroids.managers.SceneManager;
@@ -23,10 +23,10 @@ public class MenuScene extends Scene {
 	
 	private GameObject[] stars1, stars2;
 	
-	private Texture[] playerTextures = new Texture[5];
-	private String[] playerLabels = new String[5];
+	private Texture[][] playerTextures = new Texture[6][2];
+	private String[] playerLabels = new String[6];
 	
-	private Texture starTexture1, starTexture2, asteroidTexture, satelliteTexture, panelTexture, optionsTexture, 
+	private Texture starTexture1, starTexture2, asteroidTexture, asteroidTexture2, satelliteTexture, panelTexture, optionsTexture, 
 		coinTexture, arrowLeftTexture, arrowRightTexture, unknownTexture;
 	private Sound blip, bloop, unlock;
 	
@@ -35,7 +35,7 @@ public class MenuScene extends Scene {
 	
 	private int bank, selection;
 	
-	public MenuScene(SceneManager sm, AssetManager am, Font[] f) {
+	public MenuScene(SceneManager sm, AssetManager am, BitmapFont[] f) {
 		super(sm, am, f);
 		
 		stats = new DataManager();
@@ -43,25 +43,37 @@ public class MenuScene extends Scene {
 		bank = Gdx.app.getPreferences("AsteroidArcadePrefs").getInteger("bank", 0);
 		selection = 0;
 		
-		playerTextures[0] = assetManager.get("textures/ships/rocket.png", Texture.class);
-		playerTextures[1] = assetManager.get("textures/ships/shuttle.png", Texture.class);
-		playerTextures[2] = assetManager.get("textures/ships/eagle.png", Texture.class);
-		//playerTextures[3] = assetManager.get("textures/ships/laser_ship.png", Texture.class);
-		playerTextures[3] = assetManager.get("textures/ships/whale_1.png", Texture.class);
-		playerTextures[4] = assetManager.get("textures/ships/ufo.png", Texture.class);
+		playerTextures[0][0] = assetManager.get("textures/ships/rocket_0.png", Texture.class);
+		playerTextures[0][1] = assetManager.get("textures/ships/rocket_1.png", Texture.class);
+		
+		playerTextures[1][0] = assetManager.get("textures/ships/shuttle_0.png", Texture.class);
+		playerTextures[1][1] = assetManager.get("textures/ships/shuttle_1.png", Texture.class);
+		
+		playerTextures[2][0] = assetManager.get("textures/ships/eagle_0.png", Texture.class);
+		playerTextures[2][1] = assetManager.get("textures/ships/eagle_1.png", Texture.class);
+		
+		playerTextures[3][0] = assetManager.get("textures/ships/whale_0.png", Texture.class);
+		playerTextures[3][1] = assetManager.get("textures/ships/whale_1.png", Texture.class);
+		
+		playerTextures[4][0] = assetManager.get("textures/ships/ufo_0.png", Texture.class);
+		playerTextures[4][1] = assetManager.get("textures/ships/ufo_1.png", Texture.class);
+		
+		playerTextures[5][0] = assetManager.get("textures/ships/rock_0.png", Texture.class);
+		playerTextures[5][1] = assetManager.get("textures/ships/rock_1.png", Texture.class);
 		
 		playerLabels[0] = "Rocket";
 		playerLabels[1] = "Orbiter";
 		playerLabels[2] = "Eagle";
-		//playerLabels[3] = "Laser Ship";
-		playerLabels[3] = "Doby Mick";
+		playerLabels[3] = "Whale";
 		playerLabels[4] = "Roswell";
+		playerLabels[5] = "Asteroid";
 		
 		unknownTexture = assetManager.get("gui/unknown.png", Texture.class);
 		
 		starTexture1 = assetManager.get("textures/star.png", Texture.class);
 		starTexture2 = assetManager.get("textures/star_1.png", Texture.class);
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
+		asteroidTexture2 = assetManager.get("textures/asteroid_1.png", Texture.class);
 		satelliteTexture = assetManager.get("textures/satellite.png", Texture.class);
 		panelTexture = assetManager.get("textures/panel.png", Texture.class);
 		
@@ -74,12 +86,12 @@ public class MenuScene extends Scene {
 		
 		coinTexture = assetManager.get("textures/coin.png", Texture.class);
 		coin = new GameObject().setTexture(2f, coinTexture);
-		coin.setPosition(new Vector2(8, 16));
+		coin.setPosition(new Vector2(8, 24));
 		guiObjects.add(coin);
 		
 		optionsTexture = assetManager.get("gui/optionsLarge.png", Texture.class);
-		optionsButton = new GameObject().setTexture(1.5f, optionsTexture);
-		optionsButton.setPosition(new Vector2(Game.WIDTH - 64 + 8, 8));
+		optionsButton = new GameObject().setTexture(2f, optionsTexture);
+		optionsButton.setPosition(new Vector2(Game.WIDTH - 88, 8));
 		this.guiObjects.add(optionsButton);
 		
 		stars1 = new GameObject[20];
@@ -90,8 +102,7 @@ public class MenuScene extends Scene {
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
-			
+
 			bgObjects.add(star);
 			stars1[i] = star;
 		}
@@ -100,12 +111,11 @@ public class MenuScene extends Scene {
 			int x = ((int) ((Math.random() * (Game.WIDTH - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			int y = ((int) ((Math.random() * (Game.HEIGHT - star.getWidth())) / star.getWidth())) * (int) star.getWidth();
 			star.setPosition(new Vector2(x, y));
-			//star.setRotation((float) Math.random() * 360f, (float) Math.random() * 180f - 90f);
-			
+
 			bgObjects.add(star);
 			stars2[i] = star;
 		}
-		asteroid1 = new GameObject().setTexture(4f, asteroidTexture);
+		asteroid1 = new GameObject().setTexture(4f, asteroidTexture2);
 		asteroid1.setPosition(new Vector2(48f, 200f));
 		asteroid1.setRotation(0f, 45f);
 		fgObjects.add(asteroid1);
@@ -115,7 +125,7 @@ public class MenuScene extends Scene {
 		asteroid2.setRotation(0f, -24f);
 		fgObjects.add(asteroid2);
 		
-		asteroid3 = new GameObject().setTexture(2f, asteroidTexture);
+		asteroid3 = new GameObject().setTexture(3f, asteroidTexture);
 		asteroid3.setPosition(new Vector2(200f, 64f));
 		asteroid3.setRotation(0f, -24f);
 		fgObjects.add(asteroid3);
@@ -132,14 +142,14 @@ public class MenuScene extends Scene {
 		
 		//Ship selection
 		arrowLeft = new GameObject().setTexture(4f, arrowLeftTexture);
-		arrowLeft.setPosition(new Vector2(40f, Game.HEIGHT / 2f));
+		arrowLeft.setPosition(new Vector2(40f, (Game.HEIGHT - arrowLeft.getHeight()) / 2f));
 		guiObjects.add(arrowLeft);
 		
 		arrowRight = new GameObject().setTexture(4f, arrowRightTexture);
-		arrowRight.setPosition(new Vector2(256f + 8f, Game.HEIGHT / 2f));
+		arrowRight.setPosition(new Vector2(256f + 8f, (Game.HEIGHT - arrowRight.getHeight()) / 2f));
 		guiObjects.add(arrowRight);
 		
-		player = new GameObject().setTexture(5f, playerTextures[selection]);
+		player = new GameObject().setTexture(5f, 0.5f, playerTextures[selection]);
 		player.setPosition(new Vector2(
 				(Game.WIDTH - player.getWidth()) / 2f,
 				(Game.HEIGHT - player.getHeight()) / 2f
@@ -158,11 +168,11 @@ public class MenuScene extends Scene {
 		bankTextObj = new TextObject(bank + "", 1.5f, font[0]);
 		guiObjects.add(
 				bankTextObj
-				.setPosition(new Vector2(48, 20))
+				.setPosition(new Vector2(48, 28))
 				);
 		
-		shipLabel = new TextObject(playerLabels[0], 1f, font[0]);
-		shipLabel.setPosition(new Vector2(0f, 200f));
+		shipLabel = new TextObject(playerLabels[0], 1.5f, font[0]);
+		shipLabel.setPosition(new Vector2(0f, 180f));
 		shipLabel.centerX();
 
 		guiObjects.add(shipLabel);
@@ -177,7 +187,8 @@ public class MenuScene extends Scene {
 		
 		if(!stats.unlocks[selection]) {
 			batch.draw(coinTexture, 104, 240, 24f, 24f);
-			font[0].write(batch, "" + stats.prices[selection], 104 + 40, 240, 1.5f);
+			font[0].getData().setScale(1.5f);
+			font[0].draw(batch, "" + stats.prices[selection], 104 + 40, 240);
 		}
 	}
 
@@ -185,7 +196,8 @@ public class MenuScene extends Scene {
 	public void update(float dt) {
 		super.update(dt);
 		
-		player.getPosition().mulAdd(new Vector2(0, 32f * (float) Math.sin(3 * timer)), dt);
+		player.getPosition().mulAdd(new Vector2(0, 32f * (float) Math.cos(3 * timer)), dt);
+		player.update(dt);
 		
 		asteroid1.getPosition().mulAdd(new Vector2(0, 6f * (float) Math.cos(2 * timer)), dt);
 		asteroid2.getPosition().mulAdd(new Vector2(0, 8f * (float) Math.cos(3 * timer)), dt);
@@ -215,7 +227,7 @@ public class MenuScene extends Scene {
 				}
 				
 				if(stats.unlocks[selection]) {
-					player.setTexture(5f, playerTextures[selection]);
+					player.setTexture(5f, 0.5f, playerTextures[selection]);
 					shipLabel.setMsg(playerLabels[selection]);
 					shipLabel.centerX();
 					shipLabel.setVisibility(true);
@@ -235,7 +247,10 @@ public class MenuScene extends Scene {
 					if(bank < stats.prices[selection]) bloop.play(Game.masterVolume * 2f);
 					else {
 						bank -= stats.prices[selection];
-						player.setTexture(5f, playerTextures[selection]);
+						player.setTexture(5f, 0.5f, playerTextures[selection]);
+						shipLabel.setMsg(playerLabels[selection]);
+						shipLabel.centerX();
+						shipLabel.setVisibility(true);
 						
 						stats.unlocks[selection] = true;
 						

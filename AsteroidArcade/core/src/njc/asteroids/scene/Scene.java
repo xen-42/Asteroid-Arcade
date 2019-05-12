@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
-import njc.asteroids.graphics.Font;
 import njc.asteroids.managers.SceneManager;
 import njc.asteroids.object.GameObject;
 import njc.asteroids.object.entities.Entity;
@@ -19,7 +19,7 @@ public abstract class Scene {
 	protected SceneManager sceneManager;
 	protected AssetManager assetManager;
 	protected ShapeRenderer shapeRenderer;
-	protected Font[] font;
+	protected BitmapFont[] font;
 	
 	protected ArrayList<GameObject> bgObjects, fgObjects, objects, guiObjects;
 	protected ArrayList<Entity> entities;
@@ -32,7 +32,7 @@ public abstract class Scene {
 	
 	protected float timer;
 	
-	public Scene(SceneManager sm, AssetManager am, Font[] f) {
+	public Scene(SceneManager sm, AssetManager am, BitmapFont[] f) {
 		this.sceneManager = sm;
 		this.assetManager = am;
 		this.font = f;
@@ -105,8 +105,6 @@ public abstract class Scene {
 				fadeOpacity = 1.0f;
 			}
 			fadeOpacity = (1.0f - fadeTimer) / 1.0f;
-			//if(fadeTimer < 0.05f) fadeOpacity = (float) Math.pow(fadeTimer, 0.05);
-			//else fadeOpacity = 1 - ((fadeTimer - 0.05f) / 0.95f);
 		}
 		
 		//Entities first, because these are most likely to have children
@@ -117,9 +115,10 @@ public abstract class Scene {
 				entities.remove(i--);
 			} else {
 				obj.update(dt);
-				if(obj.markForRemoval) {
+				updateEntity(dt, i);
+				if(obj.isMarkedForRemoval()) {
 					entities.remove(i--);
-				}	
+				} 
 			}
 		}
 		
@@ -127,7 +126,7 @@ public abstract class Scene {
 			GameObject obj = objects.get(i);
 			
 			obj.update(dt);
-			if(obj.markForRemoval) {
+			if(obj.isMarkedForRemoval()) {
 				objects.remove(i--);
 			}
 		}
@@ -136,7 +135,7 @@ public abstract class Scene {
 			GameObject obj = bgObjects.get(i);
 			
 			obj.update(dt);
-			if(obj.markForRemoval) {
+			if(obj.isMarkedForRemoval()) {
 				bgObjects.remove(i--);
 			}
 		}
@@ -144,10 +143,14 @@ public abstract class Scene {
 			GameObject obj = fgObjects.get(i);
 			
 			obj.update(dt);
-			if(obj.markForRemoval) {
+			if(obj.isMarkedForRemoval()) {
 				fgObjects.remove(i--);
 			}
 		}
+	}
+	
+	public void updateEntity(float dt, int i) {
+		// Overwrite this to add more entity stuff within the update loop
 	}
 	
 	public void handleInput(float dt, Vector2 mouse, float roll) {

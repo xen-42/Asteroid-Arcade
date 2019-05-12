@@ -30,7 +30,7 @@ public class GameObject implements Cloneable {
 	private boolean copyParentRotation = false;
 	private Vector2 offset;
 	
-	public boolean markForRemoval = false;
+	protected boolean markForRemoval = false;
 	
 	public GameObject() {
 		position = new Vector2();
@@ -68,8 +68,9 @@ public class GameObject implements Cloneable {
 	public void setParent(GameObject p, Vector2 o, boolean r) {
 		this.parent = p;
 		this.offset = o;
-		this.hasParent = true;
 		this.copyParentRotation = r;
+		
+		this.hasParent = true;
 	}
 	
 	public void setOpacity(float o) {
@@ -140,7 +141,7 @@ public class GameObject implements Cloneable {
 			else {
 				float x, y;
 				if(copyParentRotation) {
-					this.setRotation(parent.getRotation() + 180f, 0f);
+					this.setRotation(parent.getRotation(), 0f);
 					
 					float angle = (float) Math.toRadians(parent.getRotation());
 					
@@ -164,6 +165,8 @@ public class GameObject implements Cloneable {
 		
 		if(this.position.y > Game.HEIGHT * 1.5f) markForRemoval = true;
 		if(this.position.y < -Game.HEIGHT / 2f) markForRemoval = true;
+		if(this.position.x < -Game.WIDTH / 2f) markForRemoval = true;
+		if(this.position.x > Game.WIDTH * 1.5f) markForRemoval = true;
 	}
 	
 	public GameObject getParent() {
@@ -183,6 +186,15 @@ public class GameObject implements Cloneable {
 				1f, 1f, this.theta);
 		
 		if(this.opacity != 1) batch.setColor(1f, 1f, 1f, 1f);
+	}
+	
+	public boolean isOnScreen() {
+		if(this.position.x > -this.getWidth() && this.position.x < Game.WIDTH ) {
+			if(this.position.y > 0 && this.position.y < Game.HEIGHT + this.getHeight()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public float getWidth() {
@@ -213,5 +225,24 @@ public class GameObject implements Cloneable {
 	public void invert() {
 		this.position.y = (this.position.y - Game.HEIGHT) * -1 - this.getHeight();
 		this.velocity.y *= -1f;
+	}
+	
+	public boolean isMarkedForRemoval() {
+		return this.markForRemoval;
+	}
+	
+	public void setMarkedForRemoval(boolean remove) {
+		this.markForRemoval = remove;
+	}
+	
+	public boolean collisionCheck(GameObject b) {
+		float dy = (this.getPosition().y + this.getHeight() / 2f) - (b.getPosition().y + b.getHeight() / 2f);
+		if(Math.abs(dy) / 0.8 < (this.getHeight() + b.getHeight()) / 2f) {
+			float dx = (this.getPosition().x + this.getWidth() / 2f) - (b.getPosition().x + b.getWidth() / 2f);
+			if(Math.abs(dx) / 0.8 < (this.getWidth() + b.getWidth()) / 2f) {				
+				return true;
+			}
+		}
+		return false;
 	}
 }

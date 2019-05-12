@@ -1,5 +1,0 @@
-package njc.asteroids.scene;
-
-public enum Level {
-
-}

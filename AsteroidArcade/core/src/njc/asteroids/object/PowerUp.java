@@ -14,9 +14,11 @@ public class PowerUp extends Entity {
 		COIN, 
 		TRIPLE_SHOT,
 		SUPER_MODE,
-		ATOM
+		ATOM,
+		MAGNET
 	}
 	private Type type;
+	
 	public PowerUp(float y, Texture t, Type type, float scale) {
 		this.type = type;
 		
@@ -27,8 +29,23 @@ public class PowerUp extends Entity {
 		this.setTeam(Team.POWERUP);
 	}
 	
+	public PowerUp(float y, Texture[] t, Type type, float scale, float frameLength) {
+		this.type = type;
+		
+		this.setTexture(scale, frameLength, t);
+		float x = ((int) ((Math.random() * (Game.WIDTH - this.getWidth())) / this.getWidth())) * this.getWidth();
+		this.setPosition(new Vector2(x, y));
+		this.setVelocity(new Vector2(0, 200f));
+		this.setTeam(Team.POWERUP);
+	}
+	
 	public PowerUp(float x, float y, Texture t, Type type, float scale) {
 		this(y, t, type, scale);
+		this.getPosition().x = x;
+	}
+	
+	public PowerUp(float x, float y, Texture[] t, Type type, float scale, float frameLength) {
+		this(y, t, type, scale, frameLength);
 		this.getPosition().x = x;
 	}
 	
@@ -59,11 +76,11 @@ public class PowerUp extends Entity {
 				case ATOM: 
 					p.atomBomb = true; 
 					break;
+				case MAGNET:
+					p.magnetMode = true;
+					p.magnetTimer = 20f;
 			}
-			this.markForRemoval = true;
-		}
-		if(e instanceof PowerUp && !this.markForRemoval) {
-			e.markForRemoval = true;
+			this.setMarkedForRemoval(true);
 		}
 	}
 }

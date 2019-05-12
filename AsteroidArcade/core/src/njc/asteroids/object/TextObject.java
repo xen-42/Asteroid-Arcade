@@ -1,14 +1,15 @@
 package njc.asteroids.object;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import njc.asteroids.graphics.Font;
 
 public class TextObject extends GameObject {
 	private String msg;
 	private float scale;
-	private Font font;
-	public TextObject(String msg, float scale, Font font) {
+	private BitmapFont font;
+	private GlyphLayout layout;
+	public TextObject(String msg, float scale, BitmapFont font) {
 		this.scale = scale;
 		this.font = font;
 
@@ -17,13 +18,19 @@ public class TextObject extends GameObject {
 	
 	public void setMsg(String msg) {
 		this.msg = msg;
-		this.width = Font.SIZE * msg.length() * scale;
-		this.height = Font.SIZE * scale;
+		
+		this.layout = new GlyphLayout();
+		this.font.getData().setScale(this.scale);
+		layout.setText(this.font, msg);
+		
+		this.width = this.layout.width;
+		this.height = this.layout.height;
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 		if(!this.getVisibility()) return;
-		font.write(batch, msg, this.getPosition().x, this.getPosition().y, scale);
+		
+		this.font.draw(batch, layout, this.getPosition().x, this.getPosition().y);
 	}
 }

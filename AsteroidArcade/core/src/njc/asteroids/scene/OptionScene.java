@@ -5,29 +5,29 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
-import njc.asteroids.graphics.Font;
 import njc.asteroids.managers.SceneManager;
 import njc.asteroids.object.GameObject;
 import njc.asteroids.object.TextObject;
 
 public class OptionScene extends Scene {
 	private Texture muteSoundTexture, soundTexture, muteMusicTexture, musicTexture,
-		asteroidTexture, rocketTexture, satelliteTexture, starTexture1, starTexture2;
+		asteroidTexture, satelliteTexture, starTexture1, starTexture2,
+		xTexture, mineTexture;
 	
-	private GameObject asteroid, rocket, satellite;
+	private GameObject asteroid, mine, satellite, aboutButton, statsButton;
 	private GameObject[] stars1, stars2;
 	
 	private Sound blip;
 	
-	private GameObject sound, music;
-	private TextObject back;
+	private GameObject sound, music, back;
 	
 	private boolean soundMute, musicMute;
 	
-	public OptionScene(SceneManager sm, AssetManager am, Font[] f) {		
+	public OptionScene(SceneManager sm, AssetManager am, BitmapFont[] f) {		
 		super(sm, am, f);
 		muteSoundTexture = assetManager.get("gui/soundMute.png", Texture.class);
 		soundTexture = assetManager.get("gui/sound.png", Texture.class);
@@ -35,10 +35,13 @@ public class OptionScene extends Scene {
 		musicTexture = assetManager.get("gui/music.png", Texture.class);
 		
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
-		rocketTexture = assetManager.get("textures/ships/rocket.png", Texture.class);
+		mineTexture = assetManager.get("textures/mine.png", Texture.class);
 		satelliteTexture = assetManager.get("textures/satellite.png", Texture.class);
+		
 		starTexture1 = assetManager.get("textures/star.png", Texture.class);
 		starTexture2 = assetManager.get("textures/star_1.png", Texture.class);
+		
+		xTexture = assetManager.get("gui/x.png", Texture.class);
 		
 		stars1 = new GameObject[20];
 		stars2 = new GameObject[20];
@@ -69,10 +72,10 @@ public class OptionScene extends Scene {
 		asteroid.setRotation(0, 45f);
 		this.fgObjects.add(asteroid);
 		
-		rocket = new GameObject().setTexture(3f, rocketTexture);
-		rocket.setPosition(new Vector2(256, 256));
-		rocket.setRotation(66f, 0);
-		this.fgObjects.add(rocket);
+		mine = new GameObject().setTexture(4f, mineTexture);
+		mine.setPosition(new Vector2(256, 256));
+		mine.setRotation(0f, 30f);
+		this.fgObjects.add(mine);
 		
 		satellite = new GameObject().setTexture(4f, satelliteTexture);
 		satellite.setPosition(new Vector2(32, 128));
@@ -82,16 +85,15 @@ public class OptionScene extends Scene {
 		blip = assetManager.get("audio/blip.wav", Sound.class);
 		
 		sound = new GameObject().setTexture(2f, -1f, soundTexture, muteSoundTexture);
-		sound.setPosition(new Vector2(128 + 16, 400));
+		sound.setPosition(new Vector2(Game.WIDTH / 2 - sound.getWidth() * 2, 400));
 		this.guiObjects.add(sound);
 		
 		music = new GameObject().setTexture(2f, -1f, musicTexture, muteMusicTexture);
-		music.setPosition(new Vector2(128 + 64 + 16, 400));
+		music.setPosition(new Vector2(Game.WIDTH/2 + music.getWidth(), 400));
 		this.guiObjects.add(music);
 		
-		back = new TextObject("BACK", 1.5f, font[1]);
-		back.setPosition(new Vector2(128 + 16, Game.HEIGHT - 256 - 32));
-		
+		back = new GameObject().setTexture(2f, xTexture);
+		back.setPosition(new Vector2(Game.WIDTH - 40, Game.HEIGHT - 40));
 		this.guiObjects.add(back);
 		
 		TextObject text1 = new TextObject("OPTIONS", 2f, font[0]);
@@ -99,30 +101,20 @@ public class OptionScene extends Scene {
 		text1.centerX();
 		this.guiObjects.add(text1);
 
-		TextObject text2 = new TextObject("SOUND", 2f, font[0]);
+		TextObject text2 = new TextObject("SOUND", 1f, font[0]);
 		text2.setPosition(new Vector2(0f, Game.HEIGHT - 192));
 		text2.centerX();
 		this.guiObjects.add(text2);
 		
-		TextObject text3 = new TextObject("CREDITS", 1f, font[0]);
-		text3.setPosition(new Vector2(0f, 96));
-		text3.centerX();
-		this.guiObjects.add(text3);
+		aboutButton = new TextObject("ABOUT", 1.0f, font[1]);
+		aboutButton.setPosition(new Vector2(0f, Game.HEIGHT - 300));
+		aboutButton.centerX();
+		this.guiObjects.add(aboutButton);
 		
-		this.guiObjects.add(
-				new TextObject("Powered by LibGDX", 1f, font[0])
-				.setPosition(new Vector2(8, 40))
-				);
-		
-		this.guiObjects.add(
-				new TextObject("Music from Incompetech", 1f, font[0])
-				.setPosition(new Vector2(8, 24))
-				);
-		
-		this.guiObjects.add(
-				new TextObject("Ceres Logiciel", 1f, font[0])
-				.setPosition(new Vector2(8, 8))
-				);
+		statsButton = new TextObject("STATS", 1.0f, font[1]);
+		statsButton.setPosition(new Vector2(0f, Game.HEIGHT - 332));
+		statsButton.centerX();
+		this.guiObjects.add(statsButton);
 		
 		soundMute = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("soundMute", false);
 		musicMute = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("musicMute", false);
@@ -136,7 +128,7 @@ public class OptionScene extends Scene {
 		super.update(dt);
 		
 		asteroid.getPosition().y += 0.25 * Math.sin(4 * timer);
-		rocket.getPosition().y += 0.4 * Math.cos(3 * timer);
+		mine.getPosition().y += 0.4 * Math.cos(3 * timer);
 		satellite.getPosition().y += 0.1 * Math.cos(2 * timer);
 	}
 	
@@ -160,14 +152,24 @@ public class OptionScene extends Scene {
 				blip.play(Game.masterVolume);
 			}
 			if(back.isTouched(mouse)) {
-				Preferences prefs = Gdx.app.getPreferences("AsteroidArcadePrefs");
-				prefs.putBoolean("soundMute", soundMute);
-				prefs.putBoolean("musicMute", musicMute);
-				prefs.flush();
+				setPreferences();
 				blip.play(Game.masterVolume);
 				
 				sceneManager.pop();
 			}
+			if(aboutButton.isTouched(mouse)) {
+				setPreferences();
+				blip.play(Game.masterVolume);
+				
+				sceneManager.push(new AboutScene(this.sceneManager, this.assetManager, this.font));
+			}
 		}
+	}
+	
+	private void setPreferences() {
+		Preferences prefs = Gdx.app.getPreferences("AsteroidArcadePrefs");
+		prefs.putBoolean("soundMute", soundMute);
+		prefs.putBoolean("musicMute", musicMute);
+		prefs.flush();
 	}
 }

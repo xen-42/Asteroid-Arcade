@@ -13,6 +13,7 @@ public class SwarmEntity extends Entity {
 	private Weapon laser;
 	private ArrayList<Entity> entities;
 	private float timer;
+	private float nextShot = 0;
 	private Sound[] lasers;
 	
 	public SwarmEntity(Texture weaponTexture, ArrayList<Entity> entities, Sound[] lasers) {
@@ -28,11 +29,12 @@ public class SwarmEntity extends Entity {
 	public void update(float dt) {
 		super.update(dt);
 		timer += dt;
-		this.getPosition().x = (Game.WIDTH - this.getWidth()) / 2f * (float) Math.cos(2 * timer) + (Game.WIDTH - this.getWidth()) / 2f;
+		this.getPosition().x = (Game.WIDTH - this.getWidth()) / 2.2f * (float) Math.cos(2 * timer) + (Game.WIDTH - this.getWidth()) / 2.2f;
 		
-		if(this.getPosition().y > 0 && Math.random() < 2f * dt) {
+		if(this.getPosition().y > 0 && timer > nextShot) {
 			entities.add(this.laser.fire(270, true));
 			lasers[(int) (Math.random() * 3)].play(Game.masterVolume);
+			nextShot = timer + 1;
 		}
 	}
 }

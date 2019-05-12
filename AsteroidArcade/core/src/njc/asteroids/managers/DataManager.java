@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class DataManager {	
-	public boolean[] unlocks = new boolean[5];
+	public boolean[] unlocks = new boolean[6];
 	public int[] prices = {
 			0,
 			200,
 			400,
 			600,
-			800
+			800,
+			1000
 	};
 	
 	public DataManager() {

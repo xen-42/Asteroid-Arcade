@@ -2,10 +2,10 @@ package njc.asteroids.scene;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 
 import njc.asteroids.Game;
-import njc.asteroids.graphics.Font;
 import njc.asteroids.managers.SceneManager;
 import njc.asteroids.object.GameObject;
 import njc.asteroids.object.TextObject;
@@ -13,7 +13,7 @@ import njc.asteroids.object.TextObject;
 public class LoadScene extends Scene {
 	private Texture asteroidTexture;
 	private GameObject asteroid, progress;
-	public LoadScene(SceneManager sm, AssetManager am, Font[] f) {
+	public LoadScene(SceneManager sm, AssetManager am, BitmapFont[] f) {
 		super(sm, am, f);
 		asteroidTexture = assetManager.get("textures/asteroid.png", Texture.class);
 		

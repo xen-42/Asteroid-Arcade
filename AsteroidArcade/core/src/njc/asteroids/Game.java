@@ -2,17 +2,19 @@ package njc.asteroids;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import njc.asteroids.graphics.Font;
 import njc.asteroids.managers.MusicHandler;
 import njc.asteroids.managers.SceneManager;
 import njc.asteroids.scene.LoadScene;
@@ -26,7 +28,7 @@ public class Game extends ApplicationAdapter {
 	private SpriteBatch _batch;
 	private SceneManager _sceneManager;
 	private AssetManager _assetManager;
-	private Font[] _fonts; 
+	private BitmapFont[] _fonts; 
 	
 	private OrthographicCamera _camera;
 	private FitViewport _viewport;
@@ -56,9 +58,10 @@ public class Game extends ApplicationAdapter {
 		_assetManager.finishLoading();
 		
 		//Set up sceneManager
-		_fonts = new Font[2];
-		_fonts[0] = new Font(Font.yellow);
-		_fonts[1] = new Font(Font.white);
+		_fonts = new BitmapFont[2];
+		(_fonts[0] = new BitmapFont()).setColor(Color.YELLOW);
+		(_fonts[1] = new BitmapFont()).setColor(Color.WHITE);
+		
 		_sceneManager = new SceneManager(new MusicHandler(_assetManager), _fonts);
 		
 		//Load resources for load scene
@@ -73,19 +76,26 @@ public class Game extends ApplicationAdapter {
 		
 		loadTexture("textures/boom.png");
 		loadTexture("textures/dish.png");
-		loadTexture("textures/flame_1.png");
-		loadTexture("textures/flame_2.png");
 		loadTexture("textures/junk.png");
 		loadTexture("textures/star_1.png");
+		loadTexture("textures/asteroid_1.png");
 		
 		//Pickups
 		loadTexture("textures/coin.png");
 		loadTexture("textures/energy.png");
 		loadTexture("textures/halfheart.png");
 		loadTexture("textures/heart.png");
-		loadTexture("textures/atom.png");
+		
+		loadTexture("textures/atom_0.png");
+		loadTexture("textures/atom_1.png");
+		loadTexture("textures/atom_2.png");
+		loadTexture("textures/atom_3.png");
+		loadTexture("textures/atom_4.png");
+		
 		loadTexture("textures/superstar.png");
 		loadTexture("textures/tripleshot.png");
+		loadTexture("textures/magnet_0.png");
+		loadTexture("textures/magnet_1.png");
 		
 		//Weapons
 		loadTexture("textures/weapons/laser.png");
@@ -108,13 +118,23 @@ public class Game extends ApplicationAdapter {
 		loadTexture("textures/wormhole.png");
 		
 		//Ships
-		loadTexture("textures/ships/rocket.png");
-		loadTexture("textures/ships/shuttle.png");
-		loadTexture("textures/ships/ufo.png");
-		loadTexture("textures/ships/laser_ship.png");
+		loadTexture("textures/ships/rocket_0.png");
+		loadTexture("textures/ships/rocket_1.png");
+		
+		loadTexture("textures/ships/shuttle_0.png");
+		loadTexture("textures/ships/shuttle_1.png");
+		
+		loadTexture("textures/ships/ufo_0.png");
+		loadTexture("textures/ships/ufo_1.png");
+		
+		loadTexture("textures/ships/whale_0.png");
 		loadTexture("textures/ships/whale_1.png");
-		loadTexture("textures/ships/whale_2.png");
-		loadTexture("textures/ships/eagle.png");
+		
+		loadTexture("textures/ships/eagle_0.png");
+		loadTexture("textures/ships/eagle_1.png");
+		
+		loadTexture("textures/ships/rock_0.png");
+		loadTexture("textures/ships/rock_1.png");
 		
 		loadTexture("textures/ships/boss_laser.png");
 		loadTexture("textures/ships/boss_laser_spikes.png");
@@ -123,8 +143,8 @@ public class Game extends ApplicationAdapter {
 		loadTexture("textures/ships/boss_ufo_spikes.png");
 		loadTexture("textures/ships/boss_turret.png");
 		
-		loadTexture("textures/ships/swarm_ufo.png");
-		loadTexture("textures/ships/swarm_ufo_2.png");
+		loadTexture("textures/ships/swarm_ufo_0.png");
+		loadTexture("textures/ships/swarm_ufo_1.png");
 		
 		//GUI
 		loadTexture("gui/music.png");
@@ -133,11 +153,11 @@ public class Game extends ApplicationAdapter {
 		loadTexture("gui/play.png");
 		loadTexture("gui/sound.png");
 		loadTexture("gui/soundMute.png");
-		loadTexture("gui/button.png");
 		loadTexture("gui/options.png");
 		loadTexture("gui/optionsLarge.png");
 		loadTexture("gui/arrowLeft.png");
 		loadTexture("gui/arrowRight.png");
+		loadTexture("gui/x.png");
 		
 		loadAudio("blip.wav");
 		loadAudio("bloop.wav");
@@ -188,7 +208,7 @@ public class Game extends ApplicationAdapter {
 	public void dispose() {
 		_batch.dispose();
 		_assetManager.dispose();
-		for(Font f : _fonts) {
+		for(BitmapFont f : _fonts) {
 			f.dispose();
 		}
 	}
@@ -213,6 +233,8 @@ public class Game extends ApplicationAdapter {
 	
 	private float getRoll() {
 		float angle = Gdx.input.getRoll();
+		if(Gdx.input.isKeyPressed(Keys.A)) angle -= 30;
+		if(Gdx.input.isKeyPressed(Keys.D)) angle += 30;
 		
 		if(angle > 30) angle = 30;
 		if(angle < -30) angle = -30;

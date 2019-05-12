@@ -15,14 +15,17 @@ public class Player extends Entity {
 	public float timer;
 	private float shieldHealth, maxShieldHealth;
 	
-	public boolean isOrganic = false;
-	
 	public boolean tripleShot = false;
 	public float tripleShotTimer = 0f;
+	
 	public boolean superMode = false;
 	public float superModeTimer = 0f;
 	
+	public boolean magnetMode = false;
+	public float magnetTimer = 0f;
+	
 	public boolean atomBomb = false;
+	
 	private boolean hpRegen = false;
 	public int score = 0;
 	
@@ -57,14 +60,6 @@ public class Player extends Entity {
 		this.shield = shield;
 		
 		return shield;
-	}
-	
-	public GameObject addFlame(int yOffset, float scale, Texture... flameTextures) {
-		GameObject flame = new GameObject()
-				.setTexture(scale, 0.5f, flameTextures)
-				.setRotation(180f, 0f);
-		flame.setParent(this, new Vector2(0, yOffset), true);
-		return flame;
 	}
 	
 	public void setShieldHealth(float hp) {
@@ -136,6 +131,14 @@ public class Player extends Entity {
 			if(superModeTimer < 0) {
 				superModeTimer = 0f;
 				superMode = false;
+			}
+		}
+		
+		if(magnetMode) {
+			magnetTimer -= dt;
+			if(magnetTimer < 0) {
+				magnetTimer = 0f;
+				magnetMode = false;
 			}
 		}
 	}

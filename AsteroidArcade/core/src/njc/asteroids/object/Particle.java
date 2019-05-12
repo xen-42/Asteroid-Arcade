@@ -12,6 +12,6 @@ public class Particle extends GameObject {
 		super.update(dt);
 		this.age += dt;
 		this.setOpacity((this.lifespan - this.age) / this.lifespan);
-		if(age >= lifespan) this.markForRemoval = true;
+		if(age >= lifespan) this.setMarkedForRemoval(true);
 	}
 }

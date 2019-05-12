@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.OrthographicCamera"/>
-<fullyQualifiedTypeName name="njc.ufo.entities.player.FlyingSaucer"/>
-<fullyQualifiedTypeName name="njc.ufo.entities.Shield"/>
-<fullyQualifiedTypeName name="njc.ufo.particle.Particle"/>
-<fullyQualifiedTypeName name="njc.ufo.entities.Player"/>
-<fullyQualifiedTypeName name="njc.ufo.entities.player.Rocket"/>
-<fullyQualifiedTypeName name="njc.ufo.entities.player.Shuttle"/>
 <fullyQualifiedTypeName name="njc.ufo.entities.Smoke"/>
 <fullyQualifiedTypeName name="njc.ufo.entities.player.Player"/>
 <fullyQualifiedTypeName name="njc.ufo.entities.weapons.Missile"/>
@@ -35,18 +28,15 @@
 <fullyQualifiedTypeName name="njc.asteroids.object.SwarmEntity"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.audio.Sound"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="njc.asteroids.Font"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.gui.TextObject"/>
 <fullyQualifiedTypeName name="njc.asteroids.scene.Level"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.BossEntity"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.player.Player"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.PowerUp.Type"/>
-<fullyQualifiedTypeName name="njc.asteroids.object.GameObject"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="njc.asteroids.Game"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
 <fullyQualifiedTypeName name="njc.asteroids.object.Entity.Team"/>
@@ -58,6 +48,16 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.viewport.Viewport"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.viewport.ExtendViewport"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.BitmapFont"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
+<fullyQualifiedTypeName name="njc.asteroids.object.GameObject"/>
+<fullyQualifiedTypeName name="njc.asteroids.object.entities.Attractor"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
+<fullyQualifiedTypeName name="njc.asteroids.object.entities.player.Weapon.Type"/>
+<fullyQualifiedTypeName name="njc.asteroids.object.entities.BossEntity"/>
+<fullyQualifiedTypeName name="njc.asteroids.object.entities.player.Player"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.BitmapFont"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.GlyphLayout"/>
 </qualifiedTypeNameHistroy>

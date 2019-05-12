@@ -2,16 +2,21 @@ package njc.asteroids.object.entities;
 
 import njc.asteroids.object.GameObject;
 import njc.asteroids.object.PowerUp;
+import njc.asteroids.object.entities.player.Player;
 
 public class Entity extends GameObject {
 	private float health = 1, maxHealth = 1;
+	public boolean immortal;
+	
+	private boolean emitsSmoke = false;
 	
 	public boolean explodeOnDeath = false;
 	public enum Team {
 		GOOD,
 		ENEMY,
 		NEUTRAL,
-		POWERUP
+		POWERUP,
+		WORMHOLE
 	}
 	private Team team;
 	public boolean canExplode = true;
@@ -35,42 +40,12 @@ public class Entity extends GameObject {
 	
 	@Override
 	public void update(float dt) {
-		super.update(dt);
-		
-		if(this.health <= 0) this.markForRemoval = true;
+		super.update(dt);		
+		if(this.health <= 0 && !immortal) this.setMarkedForRemoval(true);
 	}
 	
 	public void damage() {
-		if(--this.health <= 0) this.markForRemoval = true;
-	}
-	
-	public static boolean entityCollisionCheck(Entity a, Entity b) {
-		if(a.team == b.team && (a.team == Team.GOOD || a.team == Team.ENEMY)) return false;
-		//if(a.team == b.team && a.team == Team.POWERUP) return false;
-		
-		if(collisionCheck(a, b)) {
-			if(a.team == Team.POWERUP) {
-				((PowerUp) a).onCollide(b);
-				return false;
-			} else if (b.team == Team.POWERUP) {
-				((PowerUp) b).onCollide(a);
-				return false;
-			}
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public static boolean collisionCheck(GameObject a, GameObject b) {
-		float dy = (a.getPosition().y + a.getHeight() / 2f) - (b.getPosition().y + b.getHeight() / 2f);
-		if(Math.abs(dy) / 0.8 < (a.getHeight() + b.getHeight()) / 2f) {
-			float dx = (a.getPosition().x + a.getWidth() / 2f) - (b.getPosition().x + b.getWidth() / 2f);
-			if(Math.abs(dx) / 0.8 < (a.getWidth() + b.getWidth()) / 2f) {				
-				return true;
-			}
-		}
-		return false;
+		if(--this.health <= 0 && !immortal) this.setMarkedForRemoval(true);
 	}
 	
 	public float getHealth() {
@@ -79,5 +54,25 @@ public class Entity extends GameObject {
 	
 	public float getMaxHealth() {
 		return this.maxHealth;
+	}
+	
+	public void setEmitsSmoke(boolean smoke) {
+		this.emitsSmoke = smoke;
+	}
+	
+	/* Returns emission chance, -1 if not flaming */
+	public float isFlaming() {
+		if (this.emitsSmoke && this.getHealth() < this.getMaxHealth() * 0.4) {
+			return this.getMaxHealth() * 0.4f - this.getHealth();
+		}
+		return -1;
+	}
+	
+	/* Return emission chance, -1 if not smoking */
+	public float isSmoking() {
+		if (this.emitsSmoke && this.getHealth() < this.getMaxHealth() * 0.75) {
+			return this.getMaxHealth() * 0.75f - this.getHealth();
+		}
+		return -1;
 	}
 }
