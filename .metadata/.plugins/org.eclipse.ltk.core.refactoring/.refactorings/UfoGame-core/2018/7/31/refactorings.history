@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename type &apos;njc.asteroids.object.SwarmAlienEntity&apos; to &apos;SwarmEntity&apos;&#x0D;&#x0A;- Original project: &apos;UfoGame-core&apos;&#x0D;&#x0A;- Original element: &apos;njc.asteroids.object.SwarmAlienEntity&apos;&#x0D;&#x0A;- Renamed element: &apos;njc.asteroids.object.SwarmEntity&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;SwarmAlienEntity&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;njc.asteroids.object{SwarmAlienEntity.java[SwarmAlienEntity" matchStrategy="1" name="SwarmEntity" qualified="false" references="true" similarDeclarations="false" stamp="1532836762801" textual="false" version="1.0"/>
-</session>

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete 5 resources" deleteContents="false" description="Delete 5 resources" element1="/UfoGame-android" element2="/UfoGame-core" element3="/UfoGame-desktop" element4="/UfoGame-html" element5="/UfoGame-ios" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="5" stamp="1556767913818"/>
-</session>
