@@ -236,10 +236,7 @@ public class MenuScene extends Scene {
 					coin2.setVisibility(true);
 					coin2.setPosition(new Vector2((Game.WIDTH - shipLabel.getWidth()) / 2 - 18, 178f));
 				}
-				player.setPosition(new Vector2(
-						(Game.WIDTH - player.getWidth()) / 2f,
-						(Game.HEIGHT - player.getHeight()) / 2f
-						));
+				player.centerX();
 			}
 			
 			if(player.isTouched(mouse) || playButton.isTouched(mouse)) {
@@ -248,7 +245,7 @@ public class MenuScene extends Scene {
 					else {
 						bank -= stats.prices[selection];
 						player.setTexture(5f, 0.5f, playerTextures[selection]);
-						shipLabel.setMsg(playerLabels[selection]);
+						shipLabel.setMsg(playerLabels[selection].toUpperCase());
 						shipLabel.centerX();
 						coin2.setVisibility(false);
 						

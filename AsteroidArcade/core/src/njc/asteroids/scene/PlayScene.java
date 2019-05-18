@@ -323,7 +323,7 @@ public class PlayScene extends Scene {
 			case SWARM:
 				if(timer > swarmSpawn) {
 					newSwarm();
-					swarmSpawn = timer + 1f;
+					swarmSpawn = timer + 0.9f;
 				}
 				if(Math.random() < 0.5f * spawnChance(dt)) newDebris();
 				break;
@@ -566,7 +566,8 @@ public class PlayScene extends Scene {
 			String s = "e : " + entities.size() + "\n"
 				+ "bg: " + bgObjects.size() + "\n"
 				+ "o : " + objects.size() + "\n"
-				+ "fg: " + fgObjects.size();
+				+ "fg: " + fgObjects.size() + "\n"
+				+ "fps: " + Gdx.graphics.getFramesPerSecond();
 			
 			font[1].draw(batch, s, 20, 360);
 		}

@@ -50,7 +50,7 @@ public class MusicHandler {
 	}
 	
 	private Music getMusic(String s) {
-		return assetManager.get("audio/music/" + s + ".wav", Music.class);
+		return assetManager.get("audio/music/" + s + ".ogg", Music.class);
 	}
 }
 

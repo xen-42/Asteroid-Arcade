@@ -13,7 +13,7 @@ public class SwarmEntity extends Entity {
 	private Weapon laser;
 	private ArrayList<Entity> entities;
 	private float timer;
-	private float nextShot = 0;
+	private float nextShot = 3f;
 	private Sound[] lasers;
 	
 	public SwarmEntity(Texture weaponTexture, ArrayList<Entity> entities, Sound[] lasers) {
@@ -34,7 +34,7 @@ public class SwarmEntity extends Entity {
 		if(this.getPosition().y > 0 && timer > nextShot) {
 			entities.add(this.laser.fire(270, true).setHealth(1f));
 			lasers[(int) (Math.random() * 3)].play(Game.masterVolume);
-			nextShot = timer + 1;
+			nextShot = timer + 0.8f;
 		}
 	}
 }

@@ -67,7 +67,7 @@ public class Weapon {
 				e.setHeight(48f);
 				hp = 0.5f;
 				if(!ignoreEnergy) {
-					cooldown -= 0.02f;
+					cooldown -= 0.04f;
 					if(this.parent instanceof Player) {
 						energy -= 0.1f;
 						if(energy <= 0) cooldown += 1.0f;

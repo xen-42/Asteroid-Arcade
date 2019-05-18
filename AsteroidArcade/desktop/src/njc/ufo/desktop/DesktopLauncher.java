@@ -1,5 +1,6 @@
 package njc.ufo.desktop;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -9,8 +10,12 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = Game.TITLE;
-		config.width = 1280;
-		config.height = 640;
+		config.width = Game.WIDTH;
+		config.height = Game.HEIGHT;
+		
+		config.addIcon("icons/icon-256.png", FileType.Internal);
+        config.addIcon("icons/icon-64.png", FileType.Internal);
+        config.addIcon("icons/icon-32.png", FileType.Internal);
 		
 		new LwjglApplication(new Game(), config);
 	}

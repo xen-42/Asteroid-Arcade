@@ -21,7 +21,7 @@ import njc.asteroids.scene.LoadScene;
 
 public class Game extends ApplicationAdapter {
 	public static int WIDTH = 370, HEIGHT = 640;
-	public static final String TITLE = "Generic Asteroid Game";
+	public static final String TITLE = "Asteroid Arcade";
 	
 	public static float masterVolume, musicVolume;
 	
@@ -53,8 +53,8 @@ public class Game extends ApplicationAdapter {
 		
 		//Load music
 		loadVolume();
-		loadMusic("Arcadia.wav");
-		loadMusic("Salty_Ditty.wav");
+		loadMusic("Arcadia.ogg");
+		loadMusic("Salty_Ditty.ogg");
 		_assetManager.finishLoading();
 		
 		//Set up sceneManager
