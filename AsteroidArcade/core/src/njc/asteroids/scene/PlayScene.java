@@ -26,13 +26,15 @@ import njc.asteroids.object.entities.player.Player;
 import njc.asteroids.object.entities.player.Weapon;
 
 public class PlayScene extends Scene {
+	boolean debug = false;
+	
 	Player player;
 	Entity boss;
 	Weapon bossWeapon;
 
 	// Gui elements
 	private GameObject pauseButton, optionButton, quitButton;
-	private TextObject pauseText;
+	private TextObject pauseText, levelText, timerText, scoreText;
 
 	private Sound[] explosions = new Sound[3];
 	private Sound[] lasers = new Sound[3];
@@ -160,6 +162,7 @@ public class PlayScene extends Scene {
 	
 	private boolean inverted = false;
 	private float milestone = 3f;
+	private float swarmSpawn = 0f;
 
 	public PlayScene(SceneManager sm, AssetManager am, BitmapFont[] f, int selection) {
 		super(sm, am, f);
@@ -236,12 +239,12 @@ public class PlayScene extends Scene {
 			break;
 		case 5:
 			player.setTexture(2f, 0.5f, rockTextures);
-			player.setHealth(14);
+			player.setHealth(10);
 			player.setWeapon(Weapon.Type.MISSILE, 0f, missileTexture);
 			player.setEmitsSmoke(true);
 			
 			//Shield
-			fgObjects.add(player.addShield(7, shieldTexture, 4.5f));
+			fgObjects.add(player.addShield(5, shieldTexture, 4.5f));
 		}
 
 		player.setPosition(new Vector2((Game.WIDTH - player.getWidth()) / 2f, Game.HEIGHT / 5));
@@ -258,7 +261,17 @@ public class PlayScene extends Scene {
 		pauseText.setVisibility(false);
 		this.guiObjects.add(pauseText);
 		
-
+		levelText = new TextObject("", 1f, font[0]);
+		levelText.setPosition(new Vector2(8, Game.HEIGHT - 24));
+		this.guiObjects.add(levelText);
+		
+		timerText = new TextObject("", 1f, font[0]);
+		timerText.setPosition(new Vector2(8, Game.HEIGHT - 48));
+		this.guiObjects.add(timerText);
+		
+		scoreText = new TextObject("", 1.4f, font[0]);
+		scoreText.setPosition(new Vector2(40, Game.HEIGHT - 75));
+		this.guiObjects.add(scoreText);
 	}
 
 	@Override
@@ -275,18 +288,18 @@ public class PlayScene extends Scene {
 			// SPAWNS
 			///////////////////////////////////////////////////////////////////////
 			// Spawning stars
-			if (Math.random() < 5 * dt) {
+			if (Math.random() < 2 * dt) {
 				newStar(2f, false);
 			}
-			if (Math.random() < 5 * dt) {
+			if (Math.random() < 2 * dt) {
 				newStar(1.5f, false);
 			}
-			if (Math.random() < 5 * dt) {
+			if (Math.random() < 2 * dt) {
 				newStar(1f, false);
 			}
 
 			// Spawning powerups
-			if(!level.isBoss()) {
+			if(!level.isBoss() && level != Level.WORMHOLE) {
 				spawnPowerUps(dt);
 			}
 
@@ -308,7 +321,10 @@ public class PlayScene extends Scene {
 				if (Math.random() < 1f * spawnChance(dt)) newMine();
 				break;
 			case SWARM:
-				if(Math.random() < 0.3f * spawnChance(dt)) newSwarm();
+				if(timer > swarmSpawn) {
+					newSwarm();
+					swarmSpawn = timer + 1f;
+				}
 				if(Math.random() < 0.5f * spawnChance(dt)) newDebris();
 				break;
 			case WORMHOLE:
@@ -371,12 +387,12 @@ public class PlayScene extends Scene {
 				} else if (level == Level.PAUSE){
 					if(timer > 60){
 						double chance = Math.random();
-						if(chance > 0.50) {
+						if(chance > 0.6) {
 							// Random boss level
 							level = Level.randomBoss();
 							//Timer only really effects alien swarm
 							milestone = timer + 10;
-						} else if(chance > 0.40) {
+						} else if(chance > 0.5) {
 							level = Level.WORMHOLE;
 							newWormhole();
 							// Takes 5 seconds to reach wormhole
@@ -410,20 +426,21 @@ public class PlayScene extends Scene {
 				gameOver = true;
 				
 				this.pauseText.setVisibility(true);
-				this.pauseText.setMsg("GAME OVER");
+				this.pauseText.setMsg("GAME OVER", 1.4f);
+				this.pauseText.centerX();
 				
 				String s;
 				TextObject o;
 				
 				s = "High Score: " + (player.score > highScore ? player.score + " NEW" : highScore);
-				o = new TextObject(s, 2f, font[0]);
-				o.setPosition(new Vector2(0, Game.HEIGHT - 256));
+				o = new TextObject(s, 1f, font[0]);
+				o.setPosition(new Vector2(0, Game.HEIGHT - 288));
 				o.centerX();
 				guiObjects.add(o);
 				
 				s = "Best time: " + (player.timer > bestTime ? formatTime(player.timer) + " NEW" : formatTime(bestTime));
-				o = new TextObject(s, 2f, font[0]);
-				o.setPosition(new Vector2(0, Game.HEIGHT - 320));
+				o = new TextObject(s, 1f, font[0]);
+				o.setPosition(new Vector2(0, Game.HEIGHT - 336));
 				o.centerX();
 				guiObjects.add(o);			
 			}
@@ -525,26 +542,35 @@ public class PlayScene extends Scene {
 		}
 		
 		// Explode things
-		if (e.getHealth() <= 0) {
-			if (e.explodeOnDeath) {
-				explodeOnDeath(e);
-			} else {
-				newExplosion(e);
-			}
-			if(!(e instanceof Player)) e.setMarkedForRemoval(true);
-		}
-
 		if (e.isMarkedForRemoval()) {
-			if (!(e instanceof PowerUp))
-				newExplosion(e);
+			if (!(e instanceof PowerUp)) {
+				if (e.explodeOnDeath) {
+					explodeOnDeath(e);
+				} else {
+					newExplosion(e);
+				}
+			}
 			else if (e.isOnScreen())
 				pickups[(int) (Math.random() * 3)].play(Game.masterVolume);
 		}
+		
+		levelText.setMsg("" + level.toString());
+		timerText.setMsg("TIME: " + formatTime(player.timer));
+		scoreText.setMsg("" + player.score);
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 		super.render(batch);
+		if(debug) {
+			String s = "e : " + entities.size() + "\n"
+				+ "bg: " + bgObjects.size() + "\n"
+				+ "o : " + objects.size() + "\n"
+				+ "fg: " + fgObjects.size();
+			
+			font[1].draw(batch, s, 20, 360);
+		}
+		
 		// Gui|
 		if (!gameOver) {
 			for (int i = 0; i <= player.getHealth() / 2; i++) {
@@ -578,15 +604,6 @@ public class PlayScene extends Scene {
 
 		if (paused || gameOver)
 			quitButton.render(batch);
-
-		font[0].getData().setScale(1f);
-		font[0].draw(batch, "" + level.toString(), 8, Game.HEIGHT - 24);
-
-		font[0].getData().setScale(1f);
-		font[0].draw(batch, "Time: " + formatTime(player.timer), 8, Game.HEIGHT - 48);
-
-		font[0].getData().setScale(1.4f);
-		font[0].draw(batch, "" + player.score, 40, Game.HEIGHT - 80);
 	}
 
 	@Override
@@ -599,15 +616,14 @@ public class PlayScene extends Scene {
 		this.player.setRoll(roll);
 
 		// Held down
-		if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) {
-			if (!pauseButton.isTouched(mouse) && !optionButton.isTouched(mouse) && !paused && !gameOver) {
-				//PowerUp
-				if(player.tripleShot) {
-					playerFire(45, true, true);
-					playerFire(135, true, true);	
-				}
-				playerFire(90, false, false);
+		if ((Gdx.input.isTouched() && (!pauseButton.isTouched(mouse) && !optionButton.isTouched(mouse) && !paused && !gameOver))
+				|| Gdx.input.isKeyPressed(Keys.SPACE)) {
+			//PowerUp
+			if(player.tripleShot) {
+				playerFire(45, true, true);
+				playerFire(135, true, true);	
 			}
+			playerFire(90, false, false);
 		}
 
 		// Tap
@@ -615,13 +631,14 @@ public class PlayScene extends Scene {
 			if (!gameOver && pauseButton.isTouched(mouse)) {
 				blip.play(Game.masterVolume);
 				paused = !paused;
-				pauseText.setVisibility(!paused);
+				pauseText.setVisibility(paused);
 				pauseButton.changeFrame();
 			}
 			if (!gameOver && optionButton.isTouched(mouse)) {
 				blip.play(Game.masterVolume);
 				if (!paused) {
 					paused = true;
+					pauseText.setVisibility(paused);
 					pauseButton.changeFrame();
 				}
 				sceneManager.push(new OptionScene(sceneManager, assetManager, font));
@@ -656,7 +673,12 @@ public class PlayScene extends Scene {
 
 		asteroid.setHealth(scale);
 		asteroid.setPosition(new Vector2(x, y));
-		asteroid.setVelocity(new Vector2((float) Math.random() * 300f - 150f, (float) Math.random() * (inverted ? 1 : -1) * 300f - 100f));
+		asteroid.setVelocity(
+				new Vector2(
+						(float) Math.random() * 300f - 150f, 
+						(inverted ? 1f : -1f) * (float) (Math.random() * 300f + 100f)
+						)
+				);
 		asteroid.setRotation((float) Math.random() * 90f, (float) Math.random() * 180f - 90f);
 
 		entities.add(asteroid);
@@ -682,7 +704,12 @@ public class PlayScene extends Scene {
 
 		satellite.setHealth(health);
 		satellite.setPosition(new Vector2(x, y));
-		satellite.setVelocity(new Vector2((float) Math.random() * 300f - 150f, (float) Math.random() * (inverted ? 1 : -1) * 300f - 100f));
+		satellite.setVelocity(
+				new Vector2(
+						(float) Math.random() * 300f - 150f, 
+						(inverted ? 1f : -1f) * (float) (Math.random() * 300f + 100f)
+						)
+				);
 		satellite.setRotation((float) Math.random() * 90f, (float) Math.random() * 180f - 90f);
 
 		entities.add(satellite);
@@ -707,7 +734,7 @@ public class PlayScene extends Scene {
 	}
 	
 	private void newSwarm() {
-		SwarmEntity entity = (SwarmEntity) new SwarmEntity(laserTexture, entities, lasers);
+		SwarmEntity entity = (SwarmEntity) new SwarmEntity(photonTexture, entities, lasers);
 		if(spawnCollision(entity)) return;
 
 		entity.setTexture(2f, 0.25f, ufoSwarmTextures);

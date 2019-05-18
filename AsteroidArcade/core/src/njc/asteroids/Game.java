@@ -49,7 +49,7 @@ public class Game extends ApplicationAdapter {
 		_viewport.apply();
 
 		//Set background to black
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
+		Gdx.gl.glClearColor(0.02f, 0.0f, 0.05f, 1);
 		
 		//Load music
 		loadVolume();
@@ -59,8 +59,18 @@ public class Game extends ApplicationAdapter {
 		
 		//Set up sceneManager
 		_fonts = new BitmapFont[2];
-		(_fonts[0] = new BitmapFont()).setColor(Color.YELLOW);
-		(_fonts[1] = new BitmapFont()).setColor(Color.WHITE);
+		
+		_fonts[0] = new BitmapFont(
+				Gdx.files.internal("gui/font/PixelFont.fnt"), 
+				Gdx.files.internal("gui/font/PixelFont.png"),
+				false);
+		_fonts[0].setColor(Color.GOLD);
+		
+		_fonts[1] = new BitmapFont(
+				Gdx.files.internal("gui/font/PixelFont.fnt"), 
+				Gdx.files.internal("gui/font/PixelFont.png"),
+				false);
+		_fonts[1].setColor(Color.WHITE);
 		
 		_sceneManager = new SceneManager(new MusicHandler(_assetManager), _fonts);
 		

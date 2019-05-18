@@ -76,7 +76,6 @@ public class Weapon {
 				break;
 			case PHOTON:
 				e.setTexture(3f, this.texture);
-				e.canExplode = false;
 				e.setRotation((float) Math.random() * 90, (float) Math.random() * 180f - 90f); 
 				hp = 4f;
 				if(!ignoreEnergy) {

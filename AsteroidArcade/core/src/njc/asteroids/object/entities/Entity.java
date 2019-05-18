@@ -33,9 +33,10 @@ public class Entity extends GameObject {
 		return this.team;
 	}
 	
-	public void setHealth(float h) {
+	public Entity setHealth(float h) {
 		this.health = h;
 		if(h > this.maxHealth) this.maxHealth = h;
+		return this;
 	}
 	
 	@Override

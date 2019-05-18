@@ -18,7 +18,7 @@ public class OptionScene extends Scene {
 		asteroidTexture, satelliteTexture, starTexture1, starTexture2,
 		xTexture, mineTexture;
 	
-	private GameObject asteroid, mine, satellite, aboutButton, statsButton;
+	private GameObject asteroid, mine, satellite;
 	private GameObject[] stars1, stars2;
 	
 	private Sound blip;
@@ -106,21 +106,25 @@ public class OptionScene extends Scene {
 		text2.centerX();
 		this.guiObjects.add(text2);
 		
-		aboutButton = new TextObject("ABOUT", 1.0f, font[1]);
-		aboutButton.setPosition(new Vector2(0f, Game.HEIGHT - 300));
-		aboutButton.centerX();
-		this.guiObjects.add(aboutButton);
-		
-		statsButton = new TextObject("STATS", 1.0f, font[1]);
-		statsButton.setPosition(new Vector2(0f, Game.HEIGHT - 332));
-		statsButton.centerX();
-		this.guiObjects.add(statsButton);
-		
 		soundMute = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("soundMute", false);
 		musicMute = Gdx.app.getPreferences("AsteroidArcadePrefs").getBoolean("musicMute", false);
 		
 		if(soundMute) sound.changeFrame();
 		if(musicMute) music.changeFrame();
+		
+		this.guiObjects.add(
+				new TextObject("ABOUT", 1f, font[0])
+				.setPosition(new Vector2(0, 64))
+				.centerX()
+				);
+		
+		String text = ""
+				+ "Music from INCOMPETECH.\n"
+				+ "Uses LibGDX.\n";
+		this.guiObjects.add(
+				new TextObject(text, 1f, font[1])
+				.setPosition(new Vector2(8, 8))
+				);
 	}
 	
 	@Override
@@ -156,12 +160,6 @@ public class OptionScene extends Scene {
 				blip.play(Game.masterVolume);
 				
 				sceneManager.pop();
-			}
-			if(aboutButton.isTouched(mouse)) {
-				setPreferences();
-				blip.play(Game.masterVolume);
-				
-				sceneManager.push(new AboutScene(this.sceneManager, this.assetManager, this.font));
 			}
 		}
 	}

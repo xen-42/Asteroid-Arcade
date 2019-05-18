@@ -18,4 +18,15 @@ public enum Level {
 			return true;
 		return false;
 	} 
+	
+	@Override
+	public String toString() {
+		switch(this) {
+		case SWARM: return "UFO SWARM";
+		case BOSS_UFO: return "ENEMY UFO";
+		case BOSS_TURRET: return "ENEMY TURRET";
+		case BOSS_LASER: return "ENEMY SHIP";
+		default: return super.toString();
+		}
+	}
 }

@@ -30,7 +30,7 @@ public class MenuScene extends Scene {
 		coinTexture, arrowLeftTexture, arrowRightTexture, unknownTexture;
 	private Sound blip, bloop, unlock;
 	
-	private GameObject coin, asteroid1, asteroid2, asteroid3, satellite, panel, optionsButton;
+	private GameObject coin, asteroid1, asteroid2, asteroid3, satellite, panel, optionsButton, coin2;
 	private TextObject shipLabel, bankTextObj;
 	
 	private int bank, selection;
@@ -162,20 +162,23 @@ public class MenuScene extends Scene {
 		
 		//TextObjects
 		guiObjects.add(
-				new TextObject("ASTEROID ARCADE", 1.5f, font[0])
+				new TextObject("ASTEROID ARCADE", 1.4f, font[0])
 				.setPosition(new Vector2(0, Game.HEIGHT - 64))
 				.centerX());
-		bankTextObj = new TextObject(bank + "", 1.5f, font[0]);
+		bankTextObj = new TextObject(bank + "", 1.6f, font[0]);
 		guiObjects.add(
 				bankTextObj
-				.setPosition(new Vector2(48, 28))
+				.setPosition(new Vector2(48, 32))
 				);
 		
-		shipLabel = new TextObject(playerLabels[0], 1.5f, font[0]);
+		shipLabel = new TextObject(playerLabels[0].toUpperCase(), 1f, font[0]);
 		shipLabel.setPosition(new Vector2(0f, 180f));
 		shipLabel.centerX();
-
 		guiObjects.add(shipLabel);
+		
+		coin2 = new GameObject().setTexture(1f, coinTexture);
+		coin2.setVisibility(false);
+		guiObjects.add(coin2);
 		
 		//Start music
 		sceneManager.musicHandler.play(MusicHandler.ARCADIA);
@@ -184,12 +187,6 @@ public class MenuScene extends Scene {
 	@Override
 	public void render(SpriteBatch batch) {
 		super.render(batch);
-		
-		if(!stats.unlocks[selection]) {
-			batch.draw(coinTexture, 104, 240, 24f, 24f);
-			font[0].getData().setScale(1.5f);
-			font[0].draw(batch, "" + stats.prices[selection], 104 + 40, 240);
-		}
 	}
 
 	@Override
@@ -228,13 +225,16 @@ public class MenuScene extends Scene {
 				
 				if(stats.unlocks[selection]) {
 					player.setTexture(5f, 0.5f, playerTextures[selection]);
-					shipLabel.setMsg(playerLabels[selection]);
+					shipLabel.setMsg(playerLabels[selection].toUpperCase());
 					shipLabel.centerX();
-					shipLabel.setVisibility(true);
+					coin2.setVisibility(false);
 				}
 				else {
 					player.setTexture(5f, unknownTexture);
-					shipLabel.setVisibility(false);
+					shipLabel.setMsg(stats.prices[selection] + "");
+					shipLabel.centerX();
+					coin2.setVisibility(true);
+					coin2.setPosition(new Vector2((Game.WIDTH - shipLabel.getWidth()) / 2 - 18, 178f));
 				}
 				player.setPosition(new Vector2(
 						(Game.WIDTH - player.getWidth()) / 2f,
@@ -250,7 +250,7 @@ public class MenuScene extends Scene {
 						player.setTexture(5f, 0.5f, playerTextures[selection]);
 						shipLabel.setMsg(playerLabels[selection]);
 						shipLabel.centerX();
-						shipLabel.setVisibility(true);
+						coin2.setVisibility(false);
 						
 						stats.unlocks[selection] = true;
 						

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TextObject extends GameObject {
-	private String msg;
 	private float scale;
 	private BitmapFont font;
 	private GlyphLayout layout;
@@ -16,9 +15,12 @@ public class TextObject extends GameObject {
 		this.setMsg(msg);
 	}
 	
-	public void setMsg(String msg) {
-		this.msg = msg;
-		
+	public void setMsg(String msg, float scale) {
+		this.scale = scale;
+		setMsg(msg);
+	}
+	
+	public void setMsg(String msg) {		
 		this.layout = new GlyphLayout();
 		this.font.getData().setScale(this.scale);
 		layout.setText(this.font, msg);
@@ -31,6 +33,7 @@ public class TextObject extends GameObject {
 	public void render(SpriteBatch batch) {
 		if(!this.getVisibility()) return;
 		
-		this.font.draw(batch, layout, this.getPosition().x, this.getPosition().y);
+		font.getData().setScale(this.scale);
+		this.font.draw(batch, layout, this.getPosition().x, this.getPosition().y + this.height);
 	}
 }

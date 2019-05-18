@@ -190,7 +190,7 @@ public class GameObject implements Cloneable {
 	
 	public boolean isOnScreen() {
 		if(this.position.x > -this.getWidth() && this.position.x < Game.WIDTH ) {
-			if(this.position.y > 0 && this.position.y < Game.HEIGHT + this.getHeight()) {
+			if(this.position.y > -this.getHeight() && this.position.y < Game.HEIGHT + this.getHeight()) {
 				return true;
 			}
 		}

@@ -25,10 +25,10 @@ public class LoadScene extends Scene {
 		
 		guiObjects.add(
 				new TextObject("Loading...", 1f, font[0])
-				.setPosition(new Vector2(10, 10)
+				.setPosition(new Vector2(10, 30)
 				));
 		
-		progress = new TextObject("0%", 1f, font[1]).setPosition(new Vector2(320, 10));
+		progress = new TextObject("0%", 1f, font[1]).setPosition(new Vector2(320, 30));
 		guiObjects.add(progress);
 	}
 
