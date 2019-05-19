@@ -14,6 +14,7 @@ public class DesktopLauncher {
 		config.height = Game.HEIGHT;
 		
 		config.addIcon("icons/icon-256.png", FileType.Internal);
+		config.addIcon("icons/icon-128.png", FileType.Internal);
         config.addIcon("icons/icon-64.png", FileType.Internal);
         config.addIcon("icons/icon-32.png", FileType.Internal);
 		
