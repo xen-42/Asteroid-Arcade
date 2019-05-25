@@ -3,7 +3,7 @@ apply plugin: "java-library"
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "njc.ufo.desktop.DesktopLauncher"
+project.ext.mainClassName = "io.itch.nickjconnors.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets");
 
 task run(dependsOn: classes, type: JavaExec) {
@@ -25,8 +25,13 @@ task debug(dependsOn: classes, type: JavaExec) {
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
-    from files(sourceSets.main.output.resourcesDir)
     from {configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }}
+	
+	//Replaced
+    //from files(sourceSets.main.output.classesDir)
+	//from {configurations.api.collect {zipTree(it)}}
+	
+    from files(sourceSets.main.output.resourcesDir)
     from files(project.assetsDir);
  
     manifest {

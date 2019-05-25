@@ -1,0 +1,99 @@
+apply plugin: "java"
+
+System.setProperty("user.home", "")
+
+import org.wisepersist.gradle.plugins.gwt.GwtSuperDev
+
+def HttpFileServer server = null
+def assetsLocation = "../core/assets"
+
+gwt {
+    gwtVersion = '2.8.0' // Should match the gwt version used for building the gwt backend
+    maxHeapSize = "8G" // Default 256m is not enough for gwt compiler. GWT is HUNGRY
+    minHeapSize = "1G"
+
+    src = files(file("src/")) // Needs to be in front of "modules" below.
+    modules 'com.mine.GdxDefinition'
+    devModules 'com.mine.GdxDefinitionSuperdev'
+    project.webAppDirName = 'webapp'
+
+    compiler {
+        strict = true;
+        disableCastChecking = true;
+    }
+}
+
+task startHttpServer() {
+    dependsOn draftCompileGwt
+
+    String output = project.buildDir.path + "/gwt/draftOut";
+
+    doLast {
+        copy {
+            from "webapp"
+            into output
+        }
+        copy {
+            from assetsLocation
+            into output + "/assets"
+        }
+
+        println 'start Http Server'
+        File root = new File(output);
+
+        SimpleHttpFileServerFactory factory = new SimpleHttpFileServerFactory()
+        server = factory.start(root, 9090)
+
+        println "Server started in directory " + server.getContentRoot() + ", port " + server.getPort()
+    }
+}
+
+task superDev(type: GwtSuperDev) {
+    dependsOn startHttpServer
+    doFirst {
+        gwt.modules = gwt.devModules
+    }
+}
+
+task dist(dependsOn: [clean, compileGwt]) {
+    doLast {
+        file("build/dist").mkdirs()
+        copy {
+            from "build/gwt/out"
+            exclude '**WEB-INF/**'
+            into "build/dist"
+        }
+        delete fileTree("build/dist") {
+            include "**/*soundmanager*.*"
+            include "**/logo.png"
+            include "**/clear.cache.gif"
+            include "**/hosted.html"
+        }
+        copy {
+            from "webapp"
+            into "build/dist"
+        }
+        copy {
+            from "war"
+            into "build/dist"
+        }
+        delete "build/dist/WEB-INF"
+    }
+}
+
+task addSource {
+    doLast {
+        sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
+    }
+}
+
+tasks.compileGwt.dependsOn(addSource)
+tasks.draftCompileGwt.dependsOn(addSource)
+
+sourceCompatibility = 1.6
+sourceSets.main.java.srcDirs = ["src/"]
+
+
+eclipse.project {
+    name = appName + "-html"
+}
