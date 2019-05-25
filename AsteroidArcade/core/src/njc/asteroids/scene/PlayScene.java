@@ -79,6 +79,10 @@ public class PlayScene extends Scene {
 	private Texture laserTexture = assetManager.get("textures/weapons/laser.png", Texture.class);
 	private Texture photonTexture = assetManager.get("textures/weapons/photon.png", Texture.class);
 	private Texture missileTexture = assetManager.get("textures/weapons/missile.png", Texture.class);
+	private Texture[] flakTextures = {
+			assetManager.get("textures/weapons/flak_0.png", Texture.class),
+			assetManager.get("textures/weapons/flak_1.png", Texture.class)
+	};
 	
 	//Stuff
 	private Texture[] starTextures = {
@@ -240,13 +244,12 @@ public class PlayScene extends Scene {
 		case 5:
 			player.setTexture(2f, 0.5f, rockTextures);
 			player.setHealth(10);
-			player.setWeapon(Weapon.Type.MISSILE, 0f, missileTexture);
+			player.setWeapon(Weapon.Type.FLAK, 0f, flakTextures);
 			player.setEmitsSmoke(true);
 			
 			//Shield
 			fgObjects.add(player.addShield(5, shieldTexture, 4.5f));
 		}
-
 		player.setPosition(new Vector2((Game.WIDTH - player.getWidth()) / 2f, Game.HEIGHT / 5));
 		entities.add(player);
 
@@ -621,8 +624,8 @@ public class PlayScene extends Scene {
 				|| Gdx.input.isKeyPressed(Keys.SPACE)) {
 			//PowerUp
 			if(player.tripleShot) {
-				playerFire(45, true, true);
-				playerFire(135, true, true);	
+				playerFire(70, true, true);
+				playerFire(110, true, true);	
 			}
 			playerFire(90, false, false);
 		}
@@ -818,7 +821,7 @@ public class PlayScene extends Scene {
 	
 	private void playerFire(float dir, boolean ignoreEnergy, boolean ignoreSound) {
 		if(inverted) dir += 180f;
-		Entity e = player.getWeapon().fire(dir, ignoreEnergy);
+		Entity[] e = player.getWeapon().fire(dir, ignoreEnergy);
 		if (e != null) {
 			if(!ignoreSound) {
 				if (player.getWeapon().type != Weapon.Type.LASER)
@@ -827,8 +830,9 @@ public class PlayScene extends Scene {
 					lasers[1].play(Game.masterVolume * 0.25f);
 				}
 			}
-
-			entities.add(e);
+			
+			for(Entity ents : e)
+				entities.add(ents);
 		}
 	}
 	

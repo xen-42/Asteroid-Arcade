@@ -134,14 +134,15 @@ public class BossEntity extends Entity {
 
 		// Fire weapon
 		if (Math.random() < fireChance * dt) {
-			Entity e = this.weapon.fire(fireDir, true);
-			if (e != null) {
+			Entity[] ents = this.weapon.fire(fireDir, true);
+			if (ents != null) {
 				if (this.weapon.type != Weapon.Type.LASER)
 					lasers[(int) (Math.random() * 3)].play(Game.masterVolume);
 				else
 					lasers[2].play(Game.masterVolume * 0.25f);
-
-				entities.add(e);
+				
+				for(Entity e : ents)
+					entities.add(e);
 			}
 		}
 	}

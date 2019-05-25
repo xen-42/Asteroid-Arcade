@@ -32,7 +32,7 @@ public class SwarmEntity extends Entity {
 		this.getPosition().x = (Game.WIDTH - this.getWidth()) / 2.2f * (float) Math.cos(2 * timer) + (Game.WIDTH - this.getWidth()) / 2.2f;
 		
 		if(this.getPosition().y > 0 && timer > nextShot) {
-			entities.add(this.laser.fire(270, true).setHealth(1f));
+			entities.add(this.laser.fire(270, true)[0].setHealth(1f));
 			lasers[(int) (Math.random() * 3)].play(Game.masterVolume);
 			nextShot = timer + 0.8f;
 		}

@@ -111,6 +111,8 @@ public class Game extends ApplicationAdapter {
 		loadTexture("textures/weapons/laser.png");
 		loadTexture("textures/weapons/missile.png");
 		loadTexture("textures/weapons/photon.png");
+		loadTexture("textures/weapons/flak_0.png");
+		loadTexture("textures/weapons/flak_1.png");
 		
 		loadTexture("textures/mine.png");
 		loadTexture("textures/panel.png");

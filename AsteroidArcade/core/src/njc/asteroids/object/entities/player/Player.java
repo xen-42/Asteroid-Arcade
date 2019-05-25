@@ -38,9 +38,9 @@ public class Player extends Entity {
 	
 	@Override
 	public void damage() {
-		if(this.maxShieldHealth > 0 && shieldHealth != 0) {
+		if(this.maxShieldHealth > 0 && shieldHealth > 0) {
 			if(this.shieldHealth > 0) shieldHealth--;
-			if(shieldHealth == 0) {
+			if(shieldHealth <= 0) {
 				this.shield.setVisibility(false);
 			}
 		}
@@ -77,6 +77,10 @@ public class Player extends Entity {
 	}
 	
 	public void setWeapon(Weapon.Type type, float e, Texture wt) {
+		this.weapon = new Weapon(this, type, e, wt);
+	}
+	
+	public void setWeapon(Weapon.Type type, float e, Texture... wt) {
 		this.weapon = new Weapon(this, type, e, wt);
 	}
 	

@@ -6,29 +6,31 @@
 hs_err_pid*
 
 ## Robovm
-/ios/robovm-build/
+AsteroidArcade/ios/robovm-build/
 
 ## GWT
-/html/war/
-/html/gwt-unitCache/
+AsteroidArcade/html/war/
+AsteroidArcade/html/gwt-unitCache/
 .apt_generated/
 .gwt/
 gwt-unitCache/
 www-test/
 .gwt-tmp/
 
+AsteroidArcade/html/libs/
+
 ## Android Studio and Intellij and Android in general
-/android/libs/armeabi/
-/android/libs/armeabi-v7a/
-/android/libs/arm64-v8a/
-/android/libs/x86/
-/android/libs/x86_64/
-/android/gen/
+AsteroidArcade/android/libs/armeabi/
+AsteroidArcade/android/libs/armeabi-v7a/
+AsteroidArcade/android/libs/arm64-v8a/
+AsteroidArcade/android/libs/x86/
+AsteroidArcade/android/libs/x86_64/
+AsteroidArcade/android/gen/
 .idea/
 *.ipr
 *.iws
 *.iml
-/android/out/
+AsteroidArcade/android/out/
 com_crashlytics_export_strings.xml
 AsteroidArcade/android/build/
 
@@ -37,12 +39,12 @@ AsteroidArcade/android/build/
 .classpath
 .project
 .metadata/
-/android/bin/
-/core/bin/
-/desktop/bin/
-/html/bin/
-/ios/bin/
-/ios-moe/bin/
+AsteroidArcade/android/bin/
+AsteroidArcade/core/bin/
+AsteroidArcade/desktop/bin/
+AsteroidArcade/html/bin/
+AsteroidArcade/ios/bin/
+AsteroidArcade/ios-moe/bin/
 *.tmp
 *.bak
 *.swp
@@ -54,61 +56,61 @@ AsteroidArcade/android/build/
 
 ## NetBeans
 
-/nbproject/private/
-/android/nbproject/private/
-/core/nbproject/private/
-/desktop/nbproject/private/
-/html/nbproject/private/
-/ios/nbproject/private/
-/ios-moe/nbproject/private/
+AsteroidArcade/nbproject/private/
+AsteroidArcade/android/nbproject/private/
+AsteroidArcade/core/nbproject/private/
+AsteroidArcade/desktop/nbproject/private/
+AsteroidArcade/html/nbproject/private/
+AsteroidArcade/ios/nbproject/private/
+AsteroidArcade/ios-moe/nbproject/private/
 
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
+AsteroidArcade/build/
+AsteroidArcade/android/build/
+AsteroidArcade/core/build/
+AsteroidArcade/desktop/build/
+AsteroidArcade/html/build/
+AsteroidArcade/ios/build/
+AsteroidArcade/ios-moe/build/
 
-/nbbuild/
-/android/nbbuild/
-/core/nbbuild/
-/desktop/nbbuild/
-/html/nbbuild/
-/ios/nbbuild/
-/ios-moe/nbbuild/
+AsteroidArcade/nbbuild/
+AsteroidArcade/android/nbbuild/
+AsteroidArcade/core/nbbuild/
+AsteroidArcade/desktop/nbbuild/
+AsteroidArcade/html/nbbuild/
+AsteroidArcade/ios/nbbuild/
+AsteroidArcade/ios-moe/nbbuild/
 
-/dist/
-/android/dist/
-/core/dist/
-/desktop/dist/
-/html/dist/
-/ios/dist/
-/ios-moe/dist/
+AsteroidArcade/dist/
+AsteroidArcade/android/dist/
+AsteroidArcade/core/dist/
+AsteroidArcade/desktop/dist/
+AsteroidArcade/html/dist/
+AsteroidArcade/ios/dist/
+AsteroidArcade/ios-moe/dist/
 
-/nbdist/
-/android/nbdist/
-/core/nbdist/
-/desktop/nbdist/
-/html/nbdist/
-/ios/nbdist/
-/ios-moe/nbdist/
+AsteroidArcade/nbdist/
+AsteroidArcade/android/nbdist/
+AsteroidArcade/core/nbdist/
+AsteroidArcade/desktop/nbdist/
+AsteroidArcade/html/nbdist/
+AsteroidArcade/ios/nbdist/
+AsteroidArcade/ios-moe/nbdist/
 
 nbactions.xml
 nb-configuration.xml
 
 ## Gradle
 
-/local.properties
+AsteroidArcade/local.properties
 .gradle/
 gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
+AsteroidArcade/build/
+AsteroidArcade/android/build/
+AsteroidArcade/core/build/
+AsteroidArcade/desktop/build/*
+AsteroidArcade/html/build/
+AsteroidArcade/ios/build/
+AsteroidArcade/ios-moe/build/
 
 ## OS Specific
 .DS_Store
