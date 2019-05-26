@@ -194,14 +194,14 @@ public class MenuScene extends Scene {
 	public void update(float dt) {
 		super.update(dt);
 		
-		player.getPosition().mulAdd(new Vector2(0, 32f * (float) Math.cos(3 * timer)), dt);
+		player.getPosition().y = (-player.getHeight() + AsteroidArcadeGame.HEIGHT) / 2f + 16f * (float) Math.cos(2f * timer);
 		player.update(dt);
 		
-		asteroid1.getPosition().mulAdd(new Vector2(0, 6f * (float) Math.cos(2 * timer)), dt);
-		asteroid2.getPosition().mulAdd(new Vector2(0, 8f * (float) Math.cos(3 * timer)), dt);
-		asteroid3.getPosition().mulAdd(new Vector2(0, 6f * (float) Math.cos(1 * timer)), dt);
-		satellite.getPosition().mulAdd(new Vector2(0, 4f * (float) Math.sin(2 * timer)), dt);
-		panel.getPosition().mulAdd(new Vector2(0, 16f * (float) Math.sin(2 * timer)), dt);
+		asteroid1.getPosition().y = (200 + 3f * (float) Math.cos(timer));
+		asteroid2.getPosition().y = (128 + 4f * (float) Math.cos(1.5f * timer));
+		asteroid3.getPosition().y = (64 + 3f * (float) Math.cos(0.5f * timer));
+		satellite.getPosition().y = (432 + 2f * (float) Math.sin(timer));
+		panel.getPosition().y = (444 + 8f * (float) Math.sin(1.1f * timer));
 	}
 
 	@Override
